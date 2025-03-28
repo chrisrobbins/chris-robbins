@@ -1,0 +1,210 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  text-align: center;
+  margin: 0 auto;
+  background: #252c2e;
+}
+header {
+  background-color: #0e181a;
+  padding: 0;
+  margin: 0 auto;
+  text-align: center;
+  height: 200px;
+}
+.discogs-input {
+  padding: 25px 30px 25px 30px;
+  width: 100%;
+  background-color: #fffaf0;
+  font-size: 24px;
+  margin-top: 25px;
+  text-indent: 5px;
+  margin: 0 auto;
+}
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.one {
+  background-color:#f1eada;
+}
+.two {
+  background-color:#252d2e;
+}
+.search {
+  width: 50%;
+  margin-top: 25px;
+  padding-right: 35px;
+  display: inline-block;
+  position: relative;
+  margin: 0 auto;
+
+ }
+.search .icon-magnifier {
+  color: #0e181a;
+  font-size: 32px;
+  font-weight: 600;
+  position: absolute;
+  margin-top: 28px;
+  right: 10px;
+}
+a .icon-plus2 {
+  margin: 0;
+  padding: 0;
+}
+a .icon-trash2 {
+  margin: 0;
+  padding: 0;
+}
+.discogs-input::-webkit-input-placeholder {
+  font-family: 'Open Sans', 600;
+  font-size: 24px;
+  color: #252d2e;
+}
+ h1 {
+  font-size: 80px;
+  padding-top: 45px;
+  font-family: 'Allan', cursive;
+  color: #f1eada;
+}
+ h2 {
+  font-size: 40px;
+  color: #f1eada;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+.discogs-form {
+  height: 300px;
+}
+h3 {
+font-family: 'Open Sans', sans-serif;
+font-style: italic;
+font-weight: 600;
+font-size: 30px;
+color: #f1eada;
+text-align: left;
+margin-left: 35px;
+}
+.collection {
+  margin-top: 10px;
+  background-color:  #f1eada;
+  color: #252d2e;
+}
+.collection div {
+  position: relative;
+   height: 400px;
+   width: 30.5%;
+   display: inline-block;
+   margin: 10px;
+   margin-top: 20px;
+   text-align: center;
+   box-sizing: border-box;
+   vertical-align: top;
+   font-family: 'Open Sans', sans-serif;
+   font-size: 15px;
+   color: #252d2e;
+   background-color: #fffaf0;
+   border-radius: 3px;
+   border: 1px solid #e0dacb;
+   border-bottom: 2px solid #e0dacb;
+   cursor: pointer;
+   }
+    .search-results div {
+      position: relative;
+       height: 400px;
+       width: 80%;
+       display: block;
+       margin: 10px;
+       margin-top: 20px;
+       text-align: center;
+       box-sizing: border-box;
+       vertical-align: top;
+       font-family: 'Open Sans', sans-serif;
+       font-size: 15px;
+       color: #252d2e;
+       background-color: #fffaf0;
+       border-radius: 3px;
+       border: 1px solid #e0dacb;
+       border-bottom: 2px solid #e0dacb;
+       cursor: pointer;
+    }
+.collection div img, .search-results div img {
+  height: 210px;
+  width: 210px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 45px;
+  clear: right;
+}
+.collection div p, .search-results div p {
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  padding: 15px;
+  font-size: 18px;
+}
+.collection div a, .search-results div a {
+  position: absolute;
+  display:block;
+  text-decoration: none;
+  font-size: 18px;
+  color: #252d2e;
+  bottom: 10px;
+  right: 25px;
+  left: 25px;
+
+}
+.collection div:hover, .search-results div:hover {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  color: #f1eada;
+  background-color: rgba(239,90,52,0.9);
+  border-radius: 3px;
+  border: 1px solid #ef5a34;
+  box-shadow: 1px;
+}
+
+@media only screen and (max-width: 2200px) {
+  .collection div {
+    width: 45%;
+  }
+  .collection {
+    margin-right: 500px;
+    min-width: 450px;
+  }
+}
+@media only screen and (max-width: 1750px) {
+  .collection div {
+    width: 80%;
+    min-width: 400px;
+    max-width: 400px;
+  }
+}
+
+@media only screen and (max-width: 830px) {
+  .collection div {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+}
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .collection div, .search-results div {
+      display: block;
+      width: 80%;
+      margin: 0 auto;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+  }

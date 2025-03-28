@@ -1,0 +1,18 @@
+#drawer {
+    position: absolute;
+    right: 0;
+    top: 650px;
+    height: 100%;
+    overflow-x: hidden; /* Needed for initial hidden state */
+}
+#drawer > div {
+    height: 100%;
+    border-left: 2px solid white;
+    border-top: 2px solid white;
+    float: left;
+}
+#drawer-content {
+    width: 400px;
+    margin-right: -400px; /* -width */
+    background-color: transparent;
+}
