@@ -1,801 +1,463 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chris Robbins</title>
+<meta name="description" content="Chris Robbins — developer and designer. Selected work: Brat Lab, Muralist, Reel Recall, Convo, Why Is This Light On, AdKicker.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Familjen+Grotesk:ital,wght@0,400;0,600;1,400;1,600&family=VT323&family=Permanent+Marker&display=swap">
+<style>
+/* Layout: night-city zine — huge wide type, ticker tapes, a reactive pixel grid behind everything, case-file cards */
+:root{
+  --void:#0c0716;      /* night sky, violet-black */
+  --void-2:#160d26;    /* raised panels */
+  --ink:#f2ecff;       /* text, violet-tinted white */
+  --muted:#9a8fb4;     /* secondary text */
+  --hot:#ff2e88;       /* tag magenta */
+  --wire:#1fe5ff;      /* signal cyan */
+  --volt:#8a4bff;      /* deep violet */
+  --line:rgba(242,236,255,.14);
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;
+  --f-pixel:"VT323","Courier New",monospace;
+  --f-tag:"Permanent Marker","Comic Sans MS",cursive;
+  --gutter:clamp(16px,4vw,56px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--ink);font-family:var(--f-body);font-size:clamp(16px,1.1vw,18px);line-height:1.5;overflow-x:hidden;cursor:crosshair}
+a{color:inherit}
+::selection{background:var(--hot);color:var(--void)}
+:focus-visible{outline:2px dashed var(--wire);outline-offset:4px}
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="http://chrisrobbins.github.io/portfolio/img/favicon.png" />
+/* ambient layers */
+#grid{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.scan{position:fixed;inset:0;z-index:50;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.18) 2px 3px);mix-blend-mode:multiply}
+.grain{position:fixed;inset:-50%;z-index:51;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1s steps(4) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(0,0)}}
+main,header,footer{position:relative;z-index:2}
+.wrap{padding-inline:var(--gutter)}
 
-    <title>Chris Robbins</title <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px var(--gutter);background:rgba(12,7,22,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-pixel);font-size:26px;letter-spacing:.04em}
+.logo canvas{width:44px;height:26px;image-rendering:pixelated}
+.links{display:flex;gap:clamp(12px,2.5vw,36px);list-style:none;margin:0;padding:0;font-family:var(--f-pixel);font-size:22px;text-transform:uppercase}
+.links a{text-decoration:none;position:relative}
+.links a::before{content:"> ";color:var(--hot);opacity:0;transition:opacity .15s}
+.links a:hover::before,.links a:focus-visible::before{opacity:1}
+.status{font-family:var(--f-pixel);font-size:18px;color:var(--muted);display:flex;gap:8px;align-items:center}
+.dot{width:8px;height:8px;background:var(--hot);box-shadow:0 0 10px var(--hot);animation:blink 1.2s steps(2) infinite}
+@keyframes blink{50%{opacity:.15}}
 
-    <!-- Custom Fonts -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,400,600,700,900" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Bad+Script|Kaushan+Script|Lobster+Two|Oleo+Script|Oleo+Script+Swash+Caps" rel="stylesheet">
+/* hero */
+.hero{padding-block:clamp(24px,5vw,64px) 0;position:relative}
+.name{font-family:var(--f-display);font-weight:900;text-transform:uppercase;line-height:.84;letter-spacing:-.03em;font-size:clamp(56px,15vw,270px);margin:0;position:relative}
+.name span{display:block}
+.name .r2{padding-left:clamp(0px,8vw,160px)}
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;opacity:0}
+.glitch::before{color:var(--wire);transform:translate(-4px,0)}
+.glitch::after{color:var(--hot);transform:translate(4px,0)}
+.glitch.on::before{opacity:.9;animation:sliceA .35s steps(2) infinite}
+.glitch.on::after{opacity:.9;animation:sliceB .35s steps(2) infinite}
+@keyframes sliceA{0%{clip-path:inset(10% 0 70% 0)}25%{clip-path:inset(55% 0 20% 0)}50%{clip-path:inset(30% 0 50% 0)}75%{clip-path:inset(80% 0 2% 0)}100%{clip-path:inset(5% 0 85% 0)}}
+@keyframes sliceB{0%{clip-path:inset(65% 0 10% 0)}25%{clip-path:inset(15% 0 70% 0)}50%{clip-path:inset(45% 0 35% 0)}75%{clip-path:inset(0 0 88% 0)}100%{clip-path:inset(72% 0 6% 0)}}
+.tag{font-family:var(--f-tag);color:var(--hot);font-size:clamp(34px,6vw,96px);transform:rotate(-8deg);position:absolute;right:clamp(4px,6vw,120px);top:52%;line-height:1;text-shadow:3px 3px 0 var(--void),0 0 22px rgba(255,46,136,.55);pointer-events:none;white-space:nowrap}
+.tag::after{content:"";display:block;width:6px;height:36px;margin:-4px 0 0 34%;background:linear-gradient(var(--hot),transparent);border-radius:3px;opacity:.8}
 
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="css/jquery.FlowupLabels.css">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/overwrite.css" rel="stylesheet">
+.ticker{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding-block:12px;margin-block:clamp(18px,3vw,36px);font-family:var(--f-display);font-weight:400;font-size:clamp(16px,1.8vw,26px);text-transform:uppercase;position:relative;z-index:2;background:rgba(12,7,22,.55)}
+.ticker .track{display:inline-flex;gap:2.2em;animation:tick 32s linear infinite;padding-right:2.2em}
+.ticker.rev .track{animation-direction:reverse}
+.ticker i{font-style:normal;color:var(--hot)}
+.ticker.alt i{color:var(--wire)}
+@keyframes tick{to{transform:translateX(-50%)}}
 
+.intro{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center;padding-block:clamp(16px,3vw,40px) clamp(40px,7vw,100px)}
+.eyebox{position:relative;border:1px solid var(--line);background:rgba(22,13,38,.7);aspect-ratio:16/10;max-width:100%}
+.eyebox canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+.hud{position:absolute;font-family:var(--f-pixel);font-size:18px;color:var(--wire);line-height:1;padding:10px 12px}
+.hud.tl{top:0;left:0}.hud.br{bottom:0;right:0;color:var(--muted)}.hud.tr{top:0;right:0;color:var(--hot)}
+.corner{position:absolute;width:18px;height:18px;border-color:var(--wire);border-style:solid}
+.c1{top:-1px;left:-1px;border-width:2px 0 0 2px}.c2{top:-1px;right:-1px;border-width:2px 2px 0 0}.c3{bottom:-1px;left:-1px;border-width:0 0 2px 2px}.c4{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.mono{font-family:var(--f-pixel);font-size:22px;color:var(--wire);margin:0 0 14px}
+.copy{max-width:34ch;font-size:clamp(19px,1.6vw,24px);line-height:1.35;margin:0 0 1em;text-wrap:pretty}
+.copy em{font-style:italic;color:var(--hot);font-weight:600}
+.barcode{margin-top:28px;max-width:360px}
+.barcode svg{width:100%;height:56px;display:block}
+.barcode p{font-family:var(--f-pixel);font-size:20px;margin:6px 0 0;color:var(--muted);letter-spacing:.06em}
+
+/* section heading: scattered letters */
+.sh{font-family:var(--f-display);font-weight:900;text-transform:uppercase;font-size:clamp(64px,16vw,260px);line-height:.9;margin:0;display:flex;align-items:center;justify-content:space-between;gap:.06em;position:relative}
+.sh .px{width:.14em;height:.14em;background:var(--hot);box-shadow:.14em .14em 0 var(--wire);align-self:flex-start;margin-top:.1em}
+.sh .ghost{-webkit-text-stroke:2px var(--ink);color:transparent}
+
+/* work */
+.work{padding-block:clamp(40px,7vw,100px) 0}
+.projects{display:grid;gap:clamp(56px,8vw,120px);padding-block:clamp(24px,4vw,56px) clamp(60px,8vw,120px);list-style:none;margin:0}
+.proj{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(16px,2vw,28px);align-items:end}
+.proj .card{grid-column:1 / span 8}
+.proj .meta{grid-column:9 / span 4}
+.proj:nth-child(even) .card{grid-column:5 / span 8;grid-row:1}
+.proj:nth-child(even) .meta{grid-column:1 / span 4;grid-row:1;text-align:right}
+.card{display:block;position:relative;aspect-ratio:16/10;max-width:100%;overflow:hidden;border:1px solid var(--line);text-decoration:none;cursor:none;isolation:isolate}
+.cover{position:absolute;inset:0;display:flex;align-items:flex-end;padding:clamp(14px,2vw,26px);transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .3s}
+.cover .big{font-family:var(--f-display);font-weight:900;text-transform:uppercase;line-height:.85;font-size:clamp(40px,8.5vw,150px);letter-spacing:-.04em;position:relative;z-index:2;mix-blend-mode:normal}
+.cover .hudline{position:absolute;top:clamp(12px,1.6vw,22px);left:clamp(14px,2vw,26px);right:clamp(14px,2vw,26px);display:flex;justify-content:space-between;font-family:var(--f-pixel);font-size:clamp(16px,1.4vw,22px);z-index:2}
+.cover .art{position:absolute;inset:0;z-index:1}
+.card:hover .cover,.card:focus-visible .cover{transform:scale(1.04);filter:saturate(1.3) hue-rotate(-12deg)}
+/* the original eyeball hover */
+.eyeover{position:absolute;inset:0;z-index:5;opacity:0;transition:opacity .5s ease;background:linear-gradient(rgba(12,7,22,.55),rgba(12,7,22,.55)),url("img/noise_pattern_dark.png"),var(--void-2);background-blend-mode:normal,luminosity,normal;display:grid;place-items:center}
+.card:hover .eyeover,.card:focus-visible .eyeover{opacity:.92}
+.eyeover .ec{display:grid;place-items:center;width:100%;height:100%}
+.eyeover img{width:clamp(110px,14vw,190px);height:auto;image-rendering:auto;filter:drop-shadow(0 0 18px rgba(255,46,136,.6))}
+.card:hover .ec{animation:vibrate .1s infinite}
+@keyframes vibrate{50%{transform:rotate(2deg) translateX(2px)}100%{transform:rotate(-2deg) translateX(-2px)}}
+.eyeover .look{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-family:var(--f-pixel);font-size:22px;color:var(--wire);letter-spacing:.2em;white-space:nowrap}
+/* glitch slices on hover */
+.card .slice{position:absolute;left:0;right:0;z-index:4;pointer-events:none;opacity:0;mix-blend-mode:screen}
+.card:hover .slice{animation:slc .9s steps(1) infinite}
+.slice.s1{top:22%;height:7%;background:var(--wire)}
+.slice.s2{top:61%;height:4%;background:var(--hot);animation-delay:.3s!important}
+@keyframes slc{0%{opacity:0}10%{opacity:.5;transform:translateX(-6%)}20%{opacity:0}60%{opacity:.35;transform:translateX(9%)}70%{opacity:0}}
+
+.meta .num{font-family:var(--f-pixel);font-size:26px;color:var(--hot)}
+.meta h3{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,2.8vw,44px);line-height:1.02;margin:.15em 0 .35em;text-wrap:balance;letter-spacing:-.02em}
+.meta h3 em{font-family:var(--f-body);font-style:italic;font-weight:400;letter-spacing:0}
+.meta p{margin:0 0 14px;color:var(--muted);max-width:36ch}
+.proj:nth-child(even) .meta p{margin-left:auto}
+.chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.proj:nth-child(even) .chips{justify-content:flex-end}
+.chips li{font-family:var(--f-pixel);font-size:18px;border:1px solid var(--line);padding:1px 9px;color:var(--ink)}
+
+/* cover art themes */
+.cv-brat{background:radial-gradient(circle at 78% 30%,var(--hot) 0 18%,transparent 19%),repeating-conic-gradient(from 0deg,#1b0d2c 0 25%,#241238 0 50%) 0 0/34px 34px}
+.cv-brat .big{color:var(--ink)}
+.cv-mural{background:conic-gradient(from 200deg at 30% 60%,var(--wire),var(--volt),var(--hot),#ffb3d6,var(--wire))}
+.cv-mural .big{color:var(--void)}
+.cv-mural .hudline{color:var(--void)}
+.cv-reel{background:var(--volt)}
+.cv-reel .art{background:repeating-linear-gradient(180deg,var(--ink) 0 10px,transparent 10px 26px) left 2.5% top 0/3% 100% no-repeat,repeating-linear-gradient(180deg,var(--ink) 0 10px,transparent 10px 26px) right 2.5% top 0/3% 100% no-repeat,linear-gradient(90deg,var(--void) 0 8%,transparent 8% 92%,var(--void) 92%)}
+.cv-reel .cover,.cv-reel{padding-left:10%}
+.cv-reel .big{color:var(--ink);text-shadow:4px 4px 0 var(--hot)}
+.cv-convo{background:var(--wire)}
+.cv-convo .big{color:var(--void)}
+.cv-convo .hudline{color:var(--void)}
+.cv-light{background:radial-gradient(circle at 70% 42%,#ffe8f3 0 4%,var(--hot) 9%,rgba(255,46,136,.25) 22%,transparent 40%),#120a1f}
+.cv-light .big{color:var(--ink)}
+.cv-ad{background:repeating-linear-gradient(-45deg,var(--hot) 0 22px,var(--void) 22px 44px)}
+.cv-ad .hudline span{background:var(--void);padding:0 6px}
+.cv-reel .hudline{left:12%;right:12%}
+.cv-ad .big{color:var(--ink);background:var(--void);padding:.08em .12em;box-shadow:6px 6px 0 var(--wire)}
+
+/* custom cursor */
+#cur{position:fixed;left:0;top:0;z-index:90;pointer-events:none;width:22px;height:22px;margin:-11px 0 0 -11px;border:2px solid var(--wire);transition:width .2s,height .2s,margin .2s,border-color .2s,background .2s;mix-blend-mode:difference}
+#cur.big{width:84px;height:84px;margin:-42px 0 0 -42px;border-color:var(--hot);border-radius:50%;background:rgba(255,46,136,.15)}
+@media (hover:none){#cur{display:none}.card{cursor:pointer}}
+
+/* about */
+.about{padding-block:clamp(40px,7vw,100px)}
+.dossier{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:clamp(24px,5vw,80px);margin-top:clamp(24px,4vw,56px);align-items:start}
+.idcard{border:1px solid var(--line);background:var(--void-2);padding:16px;font-family:var(--f-pixel);font-size:20px;position:relative}
+.idcard .photo{aspect-ratio:1;max-width:100%;background:repeating-linear-gradient(0deg,#1d1131 0 6px,#251640 6px 12px);display:grid;place-items:center;position:relative;overflow:hidden;margin-bottom:12px}
+.idcard .photo canvas{width:70%;image-rendering:pixelated}
+.redact{position:absolute;left:10%;right:10%;bottom:10%;background:var(--hot);color:var(--void);text-align:center;font-size:24px;letter-spacing:.2em;transform:rotate(-4deg)}
+.idcard dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:0}
+.idcard dt{color:var(--muted)}
+.idcard dd{margin:0;color:var(--wire);text-align:right}
+.statement{font-family:var(--f-display);font-weight:400;font-size:clamp(24px,3.2vw,52px);line-height:1.12;letter-spacing:-.02em;margin:0 0 .8em;text-wrap:balance}
+.statement em{font-family:var(--f-body);font-style:italic;color:var(--wire)}
+.statement mark{background:none;color:var(--hot);font-weight:700}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,3vw,48px);color:var(--muted)}
+.cols p{margin:0;max-width:44ch}
+.cols strong{color:var(--ink);font-weight:600}
+.skills{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:28px 0 0}
+.skills li{font-family:var(--f-pixel);font-size:20px;padding:2px 12px;border:1px solid var(--volt);color:var(--ink);background:rgba(138,75,255,.12)}
+
+/* contact */
+.contact{padding-block:clamp(40px,7vw,100px) clamp(30px,4vw,60px)}
+.cta{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);margin-top:clamp(24px,4vw,56px);align-items:end}
+.cta h3{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,3.6vw,60px);line-height:1.02;margin:0;letter-spacing:-.02em;text-wrap:balance}
+.cta h3 em{font-family:var(--f-tag);font-style:normal;color:var(--hot);font-weight:400}
+.handles{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.handles li{border-bottom:1px solid var(--line)}
+.handles a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;text-decoration:none;font-family:var(--f-display);font-size:clamp(18px,1.7vw,26px);transition:padding .2s,color .2s}
+.handles a span{font-family:var(--f-pixel);font-size:20px;color:var(--muted)}
+.handles a:hover,.handles a:focus-visible{color:var(--wire);padding-left:12px}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:24px;font-family:var(--f-pixel);font-size:20px;color:var(--muted)}
+
+@media (max-width:820px){
+  .status{display:none}
+  .intro,.dossier,.cta{grid-template-columns:minmax(0,1fr)}
+  .proj .card,.proj:nth-child(even) .card{grid-column:1 / -1;grid-row:1}
+  .proj .meta,.proj:nth-child(even) .meta{grid-column:1 / -1;grid-row:2;text-align:left}
+  .proj:nth-child(even) .meta p{margin-left:0}
+  .proj:nth-child(even) .chips{justify-content:flex-start}
+  .cols{grid-template-columns:minmax(0,1fr)}
+  .tag{top:auto;bottom:-6%;right:4px}
+  .idcard{max-width:340px}
+}
+@media (max-width:480px){.hud{font-size:14px;padding:6px 8px}.links{gap:12px;font-size:19px}.logo span{display:none}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
 </head>
-
-<body id="page-top" class="index">
-
-    <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Chris Robbins</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#services">Services</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#portfolio">Portfolio</a>
-                    </li>
-                    <!-- <li>
-                        <a class="page-scroll" href="#about">About</a>
-                    </li> -->
-                    <!-- <li>
-                        <a class="page-scroll" href="#team">Team</a>
-                    </li> -->
-                    <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="http://chrisrobbins.io/Resume-of-Chris-Robbins.pdf" target="_blank">Resume</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-    </nav>
-
-    <!-- Header -->
-    <!-- <header>
-      <div class="moon large"></div>
-            <div class="moon small"></div>
-        <div class="container">
-            <div class="intro-text">
-                <div class="intro-lead-in">Full Stack Web Developer</div>
-                <div class="intro-heading">I have an infinite interest in programming, and I am always striving to be better. With a background in audio engineering, I am experienced in solving problems quickly and without degradation of quality. This helps me to zero in on even
-                    the smallest details and produce outstanding work.</div>
-
-                <a href="http://chrisrobbins.io/Resume-of-Chris-Robbins.pdf" target="_blank" class="page-scroll btn btn-xl">Resume</a>
-            </div>
-          </div>
-      <div class="rocket"></div>
-    </header> -->
+<body>
 
 
+<canvas id="grid" aria-hidden="true"></canvas>
+<div class="scan" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div id="cur" aria-hidden="true"></div>
 
-    <section id="typing_header">
-      <div class="typing_container">
+<header class="nav">
+  <a class="logo" href="#top" aria-label="Chris Robbins, home"><canvas id="logoEye" width="22" height="13"></canvas><span>C.R/</span></a>
+  <div class="status"><i class="dot"></i><span id="clock">ATX 00:00:00</span></div>
+  <ul class="links">
+    <li><a href="#work" data-scramble>Work</a></li>
+    <li><a href="#about" data-scramble>About</a></li>
+    <li><a href="#contact" data-scramble>Contact</a></li>
+  </ul>
+</header>
 
-  <p class="header_title">Chris Robbins is a</p>
-    <br>
-    <span class="element"></span>
-    <br>
-    <span class="underline">-------------------------------------</span>
+<main id="top">
+  <section class="hero wrap" aria-label="Intro">
+    <h1 class="name">
+      <span><span class="glitch" data-text="Chris">Chris</span></span>
+      <span class="r2"><span class="glitch" data-text="Robbins">Robbins</span></span>
+    </h1>
+    <div class="tag" aria-hidden="true">i see you</div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div class="track" data-words="Developer,Designer,Builder,Tinkerer,Ex-Audio Engineer,Pixel Pusher"></div></div>
+
+  <section class="intro wrap" aria-label="About in brief">
+    <div class="eyebox">
+      <canvas id="bigEye" width="64" height="40" aria-label="A pixel eyeball that follows your cursor" role="img"></canvas>
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <span class="hud tl">CAM_01 // TRACKING</span>
+      <span class="hud tr">● REC</span>
+      <span class="hud br" id="coords">X 000 / Y 000</span>
+    </div>
+    <div>
+      <p class="mono">C.R/ — developer &amp; designer</p>
+      <p class="copy">I build apps and sites that feel <em>alive</em>: quick to load, fun to poke at, and sweated down to the last pixel.</p>
+      <p class="copy" style="font-size:clamp(16px,1.2vw,19px);color:var(--muted)">Before code I was an audio engineer, which taught me to hear the tiny stuff. Now I bring that same ear to interfaces, motion and the systems underneath them.</p>
+      <div class="barcode"><svg id="barcode" viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true"></svg><p>NODE_ATX / 30.2672°N // 97.7431°W</p></div>
     </div>
   </section>
 
-    <!-- Services Section -->
-    <section id="services">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Services</h2>
-                    <br>
-                    <!-- <h3 class="section-subheading text-muted">A little of what I do.</h3> -->
-                </div>
-            </div>
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-rocket fa-stack-1x fa-inverse" style="color: #2c2508;"></i>
-                    </span>
-                    <h4 class="service-heading">Applications</h4>
-                    <p class="text-muted">React, HTML5, CSS3, Javascript, jQuery </p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-database fa-stack-1x fa-inverse" style="color: #2c2508;"></i>
-                    </span>
-                    <h4 class="service-heading">Programming</h4>
-                    <p class="text-muted">Node, Javascript, PHP, Ruby </p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-code-fork fa-stack-1x fa-inverse" style="color: #2c2508;"></i>
-                    </span>
-                    <h4 class="service-heading">Collaboration</h4>
-                    <p class="text-muted">Github, Trello, Invision, Evernote, Slack</p>
-                </div>
-            </div>
+  <section class="work" id="work" aria-labelledby="workh">
+    <h2 class="sh wrap" id="workh" aria-label="Work"><span class="px"></span><span>W</span><span class="ghost">O</span><span>R</span><span>K</span></h2>
+    <div class="ticker rev alt" aria-hidden="true"><div class="track" data-words="Apps,Experiments,Interfaces,Motion,Glitches on purpose,Side quests"></div></div>
+    <ol class="projects wrap" id="projects"></ol>
+  </section>
+
+  <section class="about" id="about" aria-labelledby="abouth">
+    <h2 class="sh wrap" id="abouth" aria-label="About"><span>A</span><span class="ghost">B</span><span>O</span><span>U</span><span>T</span><span class="px"></span></h2>
+    <div class="dossier wrap">
+      <aside class="idcard" aria-label="Profile card">
+        <div class="photo"><canvas id="idEye" width="22" height="13"></canvas><div class="redact">[ REDACTED ]</div></div>
+        <dl>
+          <dt>HANDLE</dt><dd>C.R/</dd>
+          <dt>CLASS</dt><dd>DEV + DESIGN</dd>
+          <dt>BASE</dt><dd>AUSTIN, TX</dd>
+          <dt>STATUS</dt><dd>BUILDING</dd>
+        </dl>
+      </aside>
+      <div>
+        <p class="statement">I make <em>software with personality</em>. Things people want to open twice, built with <mark>care for the details</mark> nobody asks for.</p>
+        <div class="cols">
+          <p><strong>Ears first.</strong> Years behind a mixing desk taught me to solve problems fast without losing quality. That habit stuck: I zero in on the smallest details and ship work that holds up.</p>
+          <p><strong>Ideas second.</strong> Most of my projects start as a question I can't stop thinking about. Why is that light on? What was that movie? Then I build the answer.</p>
         </div>
-    </section>
-
-    <!-- Portfolio Grid Section -->
-    <section id="portfolio" class="bg-light-gray">
-        <div class="container">
-            <div class="row">
-
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Portfolio</h2>
-                    <!-- <h3 class="section-subheading text-muted">My most recent works.</h3> -->
-                </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4 col-sm-6 portfolio-item">
-                  <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
-                    <div class="portfolio-hover">
-                        <div class="portfolio-hover-content">
-                            <img src="img/icon_eye.png" class="eyeball" alt="">
-                        </div>
-                    </div>
-                    <img src="img/portfolio/thumbnail-vinylizr.png" class="img-responsive" alt="">
-                </a>
-                <div class="portfolio-caption">
-                    <h4>VinylizR</h4>
-                    <p class="text-muted">React-Native Redux Firebase</p>
-                </div>
-
-              </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
-                      <div class="portfolio-hover">
-                          <div class="portfolio-hover-content">
-                              <img src="img/icon_eye.png" class="eyeball" alt="">
-                          </div>
-                      </div>
-                      <img src="img/portfolio/lg-images-lyricist.png" class="img-responsive" alt="">
-                  </a>
-                  <div class="portfolio-caption">
-                      <h4>Lyricist</h4>
-                      <p class="text-muted">React MongoDb</p>
-                  </div>
-
-                </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
-                      <div class="portfolio-hover">
-                          <div class="portfolio-hover-content">
-                              <img src="img/icon_eye.png" class="eyeball" alt="">
-                          </div>
-                      </div>
-             <img src="img/portfolio/thumbnail_high_charts.png" class="img-responsive" alt="">
-                  </a>
-                  <div class="portfolio-caption">
-                      <h4>Stratfor Charts</h4>
-                      <p class="text-muted">jQuery Highcharts</p>
-                  </div>
-
-
-
-                </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
-                      <div class="portfolio-hover">
-                          <div class="portfolio-hover-content">
-                              <img src="img/icon_eye.png" class="eyeball" alt="">
-                          </div>
-                      </div>
-                      <img src="img/portfolio/lg-images-todo.png" class="img-responsive" alt="">
-                  </a>
-                  <div class="portfolio-caption">
-                      <h4>To-Do List</h4>
-                      <p class="text-muted">html css jquery</p>
-                  </div>
-
-
-                </div>
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
-                      <div class="portfolio-hover">
-                          <div class="portfolio-hover-content">
-                              <img src="img/icon_eye.png" class="eyeball" alt="">
-                          </div>
-                      </div>
-                      <img src="img/portfolio/lg-images-paplove.png" class="img-responsive" alt="">
-                  </a>
-                  <div class="portfolio-caption">
-                      <h4>Paplove</h4>
-                      <p class="text-muted">Responsive Homepage</p>
-                  </div>
-
-                </div>
-
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content">
-                                <img src="img/icon_eye.png" class="eyeball" alt="">
-                            </div>
-                        </div>
-                        <img src="img/portfolio/lg-images-guitar.png" class="img-responsive" alt="">
-                    </a>
-                    <div class="portfolio-caption">
-                        <h4>ATX Guitar Repair</h4>
-                        <p class="text-muted">Wordpress</p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <!-- <section id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">About</h2>
-                    <h3 class="section-subheading text-muted">What I do in my spare time.</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="timeline">
-                        <li>
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/team/podcast.png" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>Voice Actor</h4> -->
-                                    <!-- <h4 class="subheading">Voice Acting</h4> -->
-
-                                    <!-- <h4 class="subheading">An Agency is Born</h4> -->
-                                <!-- </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">I love exploring Austin with my wife and finding new places to eat vegan! Animals are our friends!</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/team/dog2.png" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>dog lover</h4> -->
-                                    <!-- <h4 class="subheading">Transition to Full Service</h4> -->
-                                <!-- </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">My dog Gunner requires a lot of attention, so we do everything a dog can do here in ATX. He gets all the smells.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="timeline-inverted">
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/team/adventure.png" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>Adventurer</h4> -->
-                                    <!-- <h4 class="subheading"></h4> -->
-                                <!-- </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Anything I haven't done basically interests me. I use traveling and experiencing other cultures and ideas to expand my mind.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="timeline-inverted">
-                            <div class="timeline-image">
-                                <h4>Let's work together!</h4>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
-    <!-- Team Section -->
-    <!-- <section id="team" class="bg-light-gray">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Our Amazing Team</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="team-member">
-                        <img src="img/team/1.jpg" class="img-responsive img-circle" alt="">
-                        <h4>Kay Garland</h4>
-                        <p class="text-muted">Lead Designer</p>
-                        <ul class="list-inline social-buttons">
-                            <li><a href="#"><i class="fa fa-twitter"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="team-member">
-                        <img src="img/team/2.jpg" class="img-responsive img-circle" alt="">
-                        <h4>Larry Parker</h4>
-                        <p class="text-muted">Lead Marketer</p>
-                        <ul class="list-inline social-buttons">
-                            <li><a href="#"><i class="fa fa-twitter"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="team-member">
-                        <img src="img/team/3.jpg" class="img-responsive img-circle" alt="">
-                        <h4>Diana Pertersen</h4>
-                        <p class="text-muted">Lead Developer</p>
-                        <ul class="list-inline social-buttons">
-                            <li><a href="#"><i class="fa fa-twitter"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <p class="large text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
-    <!-- Clients Aside -->
-    <!-- <aside class="clients">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <a href="#">
-                        <img src="img/logos/envato.jpg" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <a href="#">
-                        <img src="img/logos/designmodo.jpg" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <a href="#">
-                        <img src="img/logos/themeforest.jpg" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <a href="#">
-                        <img src="img/logos/creative-market.jpg" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-            </div>
-        </div>
-    </aside> -->
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Contact</h2>
-                    <!-- <h3 class="section-subheading text-muted">I'm available for freelance! Get in touch here.</h3> -->
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <form autocomplete="off" name="sentMessage" class="FlowupLabels" id="contactForm" novalidate method="post">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group fl_wrap">
-                                    <label class='fl_label' for='rf_name'>&#42; &nbsp; Name</label>
-                                    <input type="text" class="form-control fl_input" required data-validation-required-message="Please enter your name.">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                                <div class="form-group fl_wrap">
-                                    <label class='fl_label' for='rf_email'>&#42; &nbsp; Email</label>
-                                    <input type="email" class="form-control fl_input"  id="email" required data-validation-required-message="Please enter your email address.">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                                <div class="form-group fl_wrap">
-                                    <label class='fl_label' for='rf_phone'>&#42; &nbsp; Phone</label>
-                                    <input type="tel" class="form-control fl_input"  required data-validation-required-message="Please enter your phone number.">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                  <p class="textarea_placeholder">&#42; &nbsp; message</p>
-                                    <textarea class="form-control" id="message" required data-validation-required-message="Please enter a message."></textarea>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="col-lg-12 text-center">
-                                <div id="success"></div>
-                                <button type="submit" class="btn btn-xl">Send Message</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <span class="copyright">&copy; chrisrobbins.io 2017</span>
-                </div>
-                <div class="col-md-8">
-                    <ul class="list-inline social-buttons">
-                        <li><a href="https://github.com/chrisrobbins" target="_blank"><i class="fa fa-github"></i></a>
-                        </li>
-                        <li><a href="http://stackoverflow.com/users/6937818/christopher-r" target="_blank"><i class="fa fa-stack-overflow"></i></a>
-                          <li><a href="http://codepen.io/christopf85/" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i></a>
-                        </li>
-                        <li><a href="https://www.linkedin.com/in/the-real-chris-robbins" target="_blank"><i class="fa fa-linkedin"></i></a>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
-    </footer>
-
-    <!-- Portfolio Modals -->
-    <!-- Use the modals below to showcase details about your portfolio projects! -->
-
-    <!-- Portfolio Modal 1 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container ports">
-                    <div class="row">
-                        <!-- <div class="col-lg-8 col-lg-offset-2">
-                            <div class="modal-body"> -->
-                                <!-- Project Details Go Here -->
-                                <h2>VinylizR</h2>
-                                <!-- <p class="item-intro text-muted">Hover over the blinking rings to see my code snippets</p> -->
-                                <p class="squeeze">This is a pet project That I am developing with two UX designers from Fender and IBM. The idea started in October 2016. Since then We have had weekly meetings where I facilitated the use of React Native in order to develop for IOS and Android with the most simplicity. We plan to launch Nov. 1! Please check out the app on my github.</p>
-                                <strong class="tech">Technologies: &nbsp; React Native &nbsp; <span class="bars">|</span> &nbsp; Redux &nbsp; <span class="bars">|</span> &nbsp; Firebase &nbsp; <span class="bars">|</span> &nbsp; Sketch</strong>
-                                <br>
-                                <br>
-
-                                <a href="https://github.com/chrisrobbins/Vinylizr" target="_blank"><button type="button" class="btn btn-primary btn-stack">Github</button></a>
-                                <img class="img-responsive img-centered" src="img/portfolio/lg-images-vinylizr.png" alt="VinylizR">
-
-
-
-
-                            <!-- </div>
-                        </div> -->
-                    </div>
-                </div>
-            </div>
-        </div>
+        <ul class="skills" aria-label="Toolkit">
+          <li>React</li><li>React Native</li><li>Swift</li><li>Node</li><li>TypeScript</li><li>UI / UX</li><li>Motion</li>
+        </ul>
+      </div>
     </div>
+  </section>
 
+  <div class="ticker" aria-hidden="true"><div class="track" data-words="Got a weird idea?,Let's build it,Got a weird idea?,Let's build it"></div></div>
 
-        <!-- Portfolio Modal 2 -->
-        <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal">
-                        <div class="lr">
-                            <div class="rl">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container ports">
-                        <div class="row">
-                            <!-- <div class="col-lg-8 col-lg-offset-2">
-                                <div class="modal-body"> -->
-                                    <!-- Project Details Go Here -->
-                                    <h2>Lyricist</h2>
-                                    <!-- <p class="item-intro text-muted">Hover over the blinking rings to see my code snippets</p> -->
-                                    <p class="squeeze">Lyricist is an app that allows you to search for your favorite song and return both the lyrics and the video in case you want to sing along or learn how to play along with your instrument of choice. I worked with two other developers on this project. We designed and coded our mvp in five days. We had to make our own lyrics api because other lyrics api's are very expensive. Try doing a search for "Knockin on Heaven's Door" </p>
-                                    <strong class="tech">Technologies: &nbsp; React &nbsp; <span class="bars">|</span> &nbsp; <span class="bars">|</span> &nbsp; CSS &nbsp; <span class="bars">|</span> &nbsp; Node &nbsp; <span class="bars">|</span> &nbsp; Express</strong>
-                                    <br>
-                                    <br>
-
-                                    <a href="https://chrisrobbins.github.io/Lyricist/" target="_blank"><button type="button" class="btn btn-primary btn-stack">Launch Site</button></a>
-                                    <a href="https://github.com/OiseauNoir/Lyricist" target="_blank"><button type="button" class="btn btn-primary btn-stack">Github</button></a>
-                                    <img class="img-responsive img-centered" src="img/portfolio/lg-images-lyricist.png" alt="">
-
-                                <!-- <div class="imagemap">
-
-                                    <div class="lyricist bubbletip first">
-                                        <div class="lyricist gps_ring one"></div>
-                                        <div class="lyricist_done"></div>
-                                        <span class="tooltiptext">The concept of this web app is to generate a user based lyrics API. So far, there are a couple dozen lyrics loaded. As you can see, by typing in Knockin on Heaven's Door, both the lyrics and YouTube video are displayed in the DOM. This is achieved by making a simple GET request using Axios.
-                                          <br>
-                                          <img src="img/getLyrics.png" alt="" />
-                                        </span>
-                                    </div>
-                                    <div class="lyricist bubbletip second">
-                                        <div class="lyricist gps_ring two"></div>
-                                        <div class="lyricist_two_done"></div>
-                                        <span class="tooltiptext">Just in case the video you were hoping for isn't the one displayed in the jumbotron, the next 4 most popular videos of your search are displayed here using .pop() on the array.
-                                          <img src="img/videoString.png" alt="" />
-                                        </span>
-                                    </div>
-                                    <div class="lyricist bubbletip third">
-                                        <div class="lyricist gps_ring three"></div>
-                                        <div class="lyricist_three_done"></div>
-                                        <span class="tooltiptext">The video is rendered through this component via the YouTube API.
-                                          <img src="img/loadVideo.png" alt="" />
-                                        </span>
-                                    </div>
-                                </div> -->
-
-
-                                    <!-- </div>
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-        <!-- Portfolio Modal 3 -->
-        <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal">
-                        <div class="lr">
-                            <div class="rl">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container ports">
-                        <div class="row">
-                            <!-- <div class="col-lg-8 col-lg-offset-2">
-                                <div class="modal-body"> -->
-                                    <!-- Project Details Go Here -->
-                                    <h2>Stratfor Charts</h2>
-                                    <!-- <p class="item-intro text-muted">Hover over the blinking rings to see my code snippets</p> -->
-                                    <p class="squeeze">Stratfor hired me to do some data vis for them. I researched some different libraries and decided on Highcharts. Highcharts has a lot of neat stuff right out of the box, but mixing it into html can be a bit of a challenge! One I gladly accepted. This chart is highly interactive and ultimately customized.</p>
-                                    <strong class="tech">Technologies: &nbsp; Highcharts &nbsp; <span class="bars">|</span> &nbsp; HTML &nbsp; <span class="bars">|</span> &nbsp; CSS &nbsp; <span class="bars">|</span> &nbsp; JavaScript &nbsp; <span class="bars">|</span> &nbsp; jQuery &nbsp;</strong>
-                                    <br>
-                                    <br>
-
-                                    <a href="http://chrisrobbins.io/work_projects/stratfor/charts_and_graphs/defense_spending_comparison/" target="_blank"><button type="button" class="btn btn-primary btn-stack">Launch Site</button></a>
-
-                                    <img class="img-responsive img-centered" src="img/portfolio/large_high_charts.png" alt="">
-
-                                    <!-- <div class="imagemap">
-
-
-                                    <div class="tictac bubbletip first">
-                                        <div class="tictac gps_ring one"></div>
-                                        <div class="tictac_done"></div>
-                                        <span class="tooltiptext">The current player is toggled between turns.</span>
-                                    </div>
-                                    <div class="tictac bubbletip second">
-                                        <div class="tictac gps_ring two"></div>
-                                        <div class="tictac_two_done"></div>
-                                        <span class="tooltiptext">The Scoreboard updates after every win.
-                                          <img src="img/tictacScore.png" alt="" />
-                                        </span>
-                                    </div>
-                                    <div class="tictac bubbletip third">
-                                        <div class="tictac gps_ring three"></div>
-                                        <div class="tictac_three_done"></div>
-                                        <span class="tooltiptext">In this function, every row up, down, across and diagonal are checked for the same badge in order to declare a winner.
-                                          <img src="img/tictacWinner.png" alt="" />
-                                        </span>
-                                    </div>
-                                </div> -->
-
-                                <!-- </div>
-                            </div> -->
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-
-        <!-- Portfolio Modal 4 -->
-        <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal">
-                        <div class="lr">
-                            <div class="rl">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container ports">
-                        <div class="row">
-                            <!-- <div class="col-lg-8 col-lg-offset-2">
-                                <div class="modal-body"> -->
-                                <h2>To-Do App</h2>
-                                <!-- <p class="item-intro text-muted">Hover over the blinking rings to see my code snippets</p> -->
-                                <p class="squeeze">My first react app! A simple To-Do app using MongoDB and Auth0. Sign in via facebook, google or github, and save your very own todo list!</p>
-                                <strong class="tech">Technologies: &nbsp; React &nbsp; | &nbsp; Mongo &nbsp; | &nbsp; AJAX &nbsp; <span class="bars">|</span> &nbsp; Auth0 &nbsp; <span class="bars">|</span> &nbsp; CSS &nbsp; <span class="bars">|</span> &nbsp; HTML</strong>
-                                <br>
-                                <br>
-                                <a href="http://chrisrobbins.io/todolist/" target="_blank"><button type="button" class="btn btn-primary btn-stack">Launch Site</button></a>
-
-                                <img class="img-responsive img-centered" src="img/portfolio/lg-images-todo.png" alt="">
-
-                                <!-- <div class="imagemap">
-
-
-                                <div class="todo bubbletip first">
-                                    <div class="todo gps_ring one"></div>
-                                    <div class="todo_done"></div>
-                                    <span class="tooltiptext">Here I used the value of the input to populate the database dynamically. You can see your list update in real time.
-                                      <br>
-                                      <img src="img/loadTodo.png" alt="" />
-                                    </span>
-                                </div>
-                                <div class="todo bubbletip second">
-                                    <div class="todo gps_ring two"></div>
-                                    <div class="todo_two_done"></div>
-                                    <span class="tooltiptext"> Clicking delete fires off the deleteTodo function successfully deleting the todo from the dom and the database.
-                                      <br>
-                                      <img src="img/deleteTodo.png" alt="" />
-                                    </span>
-                                </div>
-                            </div> -->
-
-
-                            <!-- </div> -->
-                        <!-- </div> -->
-                    </div>
-                </div>
-            </div>
-        </div>
+  <section class="contact" id="contact" aria-labelledby="contacth">
+    <h2 class="sh wrap" id="contacth" aria-label="Connect"><span>C</span><span class="ghost">O</span><span>N</span><span>N</span><span class="px"></span><span>E</span><span>C</span><span>T</span></h2>
+    <div class="cta wrap">
+      <h3>Got a project that needs to feel a little <em>dangerous</em>? Let's talk.</h3>
+      <ul class="handles">
+        <li><a href="https://www.linkedin.com/in/the-real-chris-robbins" target="_blank" rel="noopener">LinkedIn <span>/in/the-real-chris-robbins ↗</span></a></li>
+        <li><a href="https://github.com/chrisrobbins" target="_blank" rel="noopener">GitHub <span>@chrisrobbins ↗</span></a></li>
+        <li><a href="https://codepen.io/christopf85/" target="_blank" rel="noopener">CodePen <span>@christopf85 ↗</span></a></li>
+      </ul>
     </div>
+  </section>
+  <footer class="foot wrap"><span>© 2026 CHRIS ROBBINS</span><span>ALL SYSTEMS WATCHED_</span></footer>
+</main>
 
+<script>
+(() => {
+const EYE_SRC = "img/icon_eye.png";
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        <!-- Portfolio Modal 5 -->
-        <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal">
-                        <div class="lr">
-                            <div class="rl">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container ports">
-                        <div class="row">
-                            <!-- <div class="col-lg-8 col-lg-offset-2"> -->
-                                <!-- <div class="modal-body"> -->
-                                    <!-- Project Details Go Here -->
-                                    <h2>Paplove</h2>
-                                    <!-- <p class="item-intro text-muted">Hover over the blinking rings to see my code snippets</p> -->
-                                    <p class="squeeze">Paplove is an online store idea inspired by a UX software designer. She gave me a Sketch wireframe of the homepage and explained to me how she wanted it to act when shrinking the window. It's a demonstration of UI layout and responsive development using media queries, therfore, nothing else works on the site. I got all of my assets and dimensions from the sketch wireframe and coded this homepage in HTML, CSS, and JQUERY.</p>
-                                    <strong class="tech">Technologies: &nbsp; HTML &nbsp; <span class="bars">|</span> &nbsp; CSS &nbsp; <span class="bars">|</span> JavaScript &nbsp; <span class="bars">|</span> &nbsp; jQuery</strong>
-                                    <br>
-                                    <br>
-                                    <a href="http://chrisrobbins.io/paplove/index.html" target="_blank"><button type="button" class="btn btn-primary btn-stack">Launch Site</button></a>
-                                    <br>
-                                    <br>
-                                    <img class="img-responsive img-centered" src="img/portfolio/lg-images-paplove.png" alt="">
-                                    <!-- <div class="imagemap">
-
-
-                                    <div class="parallax bubbletip first">
-                                        <div class="parallax gps_ring_dark one"></div>
-                                        <div class="parallax_done_dark"></div>
-                                        <span class="tooltiptext">Launch the site, then shrink the window to see responsiveness. Once the window is at it's smallest width, click the Search link to see the drop down animation. </span>
-                                    </div>
-                                </div> -->
-
-
-
-
-                                <!-- </div>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Portfolio Modal 6 -->
-
-        <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal">
-                        <div class="lr">
-                            <div class="rl">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container ports portfolio">
-                        <div class="row">
-                            <!-- <div class="col-lg-8 col-lg-offset-2">
-                                <div class="modal-body"> -->
-                                    <!-- Project Details Go Here -->
-                                    <h2>ATX Guitar Repair</h2>
-                                    <!-- <p class="item-intro text-muted">Hover over the blinking rings to see my code snippets</p> -->
-
-                                    <p class="squeeze">This is a wordpress site I created for my guitar repair business. Simple nav interaction, carousel slider for the hero images, google map for location, and contact form.</p>
-                                    <strong class="tech">Technologies: &nbsp; WORDPRESS &nbsp; <span class="bars">|</span> &nbsp; HTML &nbsp; <span class="bars">|</span>  &nbsp; CSS</strong>
-                                    <br>
-                                    <br>
-                                    <a href="http://atxguitarrepair.com" target="_blank"><button type="button" class="btn btn-primary btn-stack">Launch Site</button></a>
-                                    <img class="img-responsive img-centered" src="img/portfolio/lg-images-guitar.png" alt="">
-
-
-                            <!-- </div>
-                        </div> -->
-                    </div>
-                </div>
-            </div>
-        </div>
+/* ---------- PROJECTS: edit copy + links here ---------- */
+const PROJECTS = [
+  {id:'brat',  title:'Brat <em>Lab</em>',  word:'Brat Lab',   file:'BRAT_LAB.EXE',  desc:'An experimental lab for training, testing and benchmarking models, built in Swift.', tags:['Swift','ML','R&D'], href:'#'},
+  {id:'mural', title:'<em>Muralist</em>',   word:'Muralist',   file:'MURALIST.APP',  desc:'A tool for planning and visualizing murals before a single can gets shaken.', tags:['App','Design'], href:'#'},
+  {id:'reel',  title:'Reel <em>Recall</em>',word:'Reel Recall',file:'REEL_RECALL',   desc:'For that movie on the tip of your tongue. Describe what you remember and get the title back.', tags:['App','Film'], href:'#'},
+  {id:'convo', title:'<em>Convo</em>',      word:'Convo',      file:'CONVO.SYS',     desc:'Conversation, rebuilt. A fresh take on how people talk to each other in an app.', tags:['App','Chat'], href:'#'},
+  {id:'light', title:'Why is this light <em>on?</em>', word:'Light On?', file:'WHY_LIGHT_ON', desc:'Point your phone at a mystery warning light and find out what it means.', tags:['App','Utility'], href:'#'},
+  {id:'ad',    title:'Ad<em>Kicker</em>',   word:'AdKicker',   file:'ADKICKER.BIN',  desc:'Kick-start ad campaigns without the agency overhead.', tags:['Web','Marketing'], href:'#'}
+];
+const COVER = {brat:'cv-brat',mural:'cv-mural',reel:'cv-reel',convo:'cv-convo',light:'cv-light',ad:'cv-ad'};
+const list = document.getElementById('projects');
+list.innerHTML = PROJECTS.map((p,i)=>`
+  <li class="proj">
+    <a class="card" href="${p.href}" aria-label="${p.word}, case file ${String(i+1).padStart(2,'0')}">
+      <div class="cover ${COVER[p.id]}">
+        <div class="art"></div>
+        <div class="hudline"><span>FILE_${String(i+1).padStart(3,'0')}</span><span>${p.file}</span></div>
+        <div class="big">${p.word}</div>
+      </div>
+      <span class="slice s1"></span><span class="slice s2"></span>
+      <div class="eyeover"><div class="ec"><img src="${EYE_SRC}" alt=""></div><span class="look">// OPEN CASE FILE</span></div>
+    </a>
+    <div class="meta">
+      <div class="num">${String(i+1).padStart(2,'0')} /</div>
+      <h3>${p.title}</h3>
+      <p>${p.desc}</p>
+      <ul class="chips">${p.tags.map(t=>`<li>${t}</li>`).join('')}</ul>
     </div>
+  </li>`).join('');
 
+/* ---------- tickers ---------- */
+document.querySelectorAll('.ticker .track').forEach(t=>{
+  const w = t.dataset.words.split(',');
+  const one = w.map(x=>`<span>${x}</span><i>✶</i>`).join('');
+  t.innerHTML = one+one+one+one;
+});
 
-        <!-- jQuery -->
-        <script src="vendor/jquery/jquery.min.js"></script>
+/* ---------- barcode ---------- */
+(() => {
+  const svg = document.getElementById('barcode'); let x=0, s='CHRISROBBINS', out='';
+  let seed=7; const r=()=>{seed=(seed*9301+49297)%233280;return seed/233280};
+  while(x<300){const w=1+Math.floor(r()*4);if(r()>.35)out+=`<rect x="${x}" y="0" width="${w}" height="56" fill="var(--ink)"/>`;x+=w+1+Math.floor(r()*2);}
+  svg.innerHTML=out;
+})();
 
+/* ---------- clock ---------- */
+const clock=document.getElementById('clock');
+const tickClock=()=>{try{clock.textContent='ATX '+new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour12:false})}catch(e){}};
+tickClock(); setInterval(tickClock,1000);
 
-        <!-- Bootstrap Core JavaScript -->
-        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+/* ---------- pointer ---------- */
+let mx=innerWidth/2, my=innerHeight/3, moved=false;
+addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;moved=true;},{passive:true});
 
-        <!-- Plugin JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-        <script src="js/jquery.FlowupLabels.js"></script>
+/* ---------- cursor ---------- */
+const cur=document.getElementById('cur');
+addEventListener('pointermove',e=>{cur.style.transform=`translate(${e.clientX}px,${e.clientY}px)`},{passive:true});
+document.addEventListener('pointerover',e=>{cur.classList.toggle('big',!!e.target.closest('.card'))});
 
-        <!-- Contact Form JavaScript -->
-        <script src="js/main.js"></script>
-        <script src="js/jqBootstrapValidation.js"></script>
-        <script src="js/contact_me.js"></script>
+/* ---------- pixel eye renderer ---------- */
+function drawEye(ctx,W,H,lookX,lookY,open,glitchRow){
+  ctx.clearRect(0,0,W,H);
+  const cx=W/2, cy=H/2, rx=W*0.46, ry=H*0.46;
+  const ir=Math.min(W,H)*0.30, pr=ir*0.45;
+  const ix=cx+lookX*rx*0.42, iy=cy+lookY*ry*0.30;
+  for(let y=0;y<H;y++){
+    const shift = (glitchRow>=0 && Math.abs(y-glitchRow)<2) ? Math.round(W*0.06) : 0;
+    for(let x=0;x<W;x++){
+      const u=(x+.5-cx)/rx, v=(y+.5-cy)/ry;
+      const lid=(1-u*u)*open;
+      if(Math.abs(u)>1) continue;
+      const inside=Math.abs(v)<lid;
+      const edge=!inside && Math.abs(v)<lid+0.16;
+      let c=null;
+      if(edge) c='#f2ecff';
+      else if(inside){
+        const d=Math.hypot(x+.5-ix,(y+.5-iy));
+        if(d<pr) c='#0c0716';
+        else if(d<ir*0.72) c='#ff2e88';
+        else if(d<ir) c=((x+y)%2)?'#1fe5ff':'#14b8d4';
+        else c=(Math.abs(v)>lid*0.7)?'#3a2560':'#e9e1ff';
+        if(Math.hypot(x+.5-(ix-pr*0.5),y+.5-(iy-pr*0.6))<Math.max(1,pr*0.35)) c='#ffffff';
+        // veins
+        if(!c||c==='#e9e1ff'){ if(((x*7+y*13)%23===0) && Math.abs(u)>.55) c='#ff2e88'; }
+      }
+      if(c){ctx.fillStyle=c;ctx.fillRect(x+shift,y,1,1);}
+    }
+  }
+}
+function eyeCanvas(id){
+  const cv=document.getElementById(id), ctx=cv.getContext('2d');
+  const st={cv,ctx,lx:0,ly:0,open:1,blinkT:0,g:-1};
+  return st;
+}
+const eyes=['bigEye','logoEye','idEye'].map(eyeCanvas);
+let nextBlink=performance.now()+2500;
 
-        <!-- Theme JavaScript -->
-        <script src="js/port.js"></script>
+/* ---------- reactive pixel grid ---------- */
+const g=document.getElementById('grid'), gx=g.getContext('2d');
+const CELL=30; let cols,rows,heat;
+function sizeGrid(){g.width=innerWidth;g.height=innerHeight;cols=Math.ceil(innerWidth/CELL);rows=Math.ceil(innerHeight/CELL);heat=new Float32Array(cols*rows);}
+sizeGrid(); addEventListener('resize',sizeGrid);
+
+/* ---------- glitch bursts ---------- */
+const glitches=[...document.querySelectorAll('.glitch')];
+function burst(){glitches.forEach(el=>el.classList.add('on'));setTimeout(()=>glitches.forEach(el=>el.classList.remove('on')),260+Math.random()*300);}
+if(!reduce){setTimeout(burst,400);setInterval(()=>{if(Math.random()<.6)burst()},3200);}
+
+/* ---------- text scramble ---------- */
+const CH='01#%&@$<>/\\_';
+document.querySelectorAll('[data-scramble]').forEach(a=>{
+  const orig=a.textContent;
+  a.addEventListener('mouseenter',()=>{ if(reduce) return; let f=0; const id=setInterval(()=>{
+    a.textContent=orig.split('').map((c,i)=>i<f/2?orig[i]:CH[Math.floor(Math.random()*CH.length)]).join('');
+    if(++f>orig.length*2){clearInterval(id);a.textContent=orig;}
+  },35);});
+});
+
+/* ---------- main loop ---------- */
+const coords=document.getElementById('coords');
+let last=0;
+function frame(t){
+  // blink scheduling
+  let blink=1;
+  if(t>nextBlink){const p=(t-nextBlink)/180; if(p>=1){nextBlink=t+2200+Math.random()*3500;} else blink=Math.abs(1-p*2);}
+  const glitchRow=(!reduce && Math.random()<0.03)?Math.floor(Math.random()*40):-1;
+  eyes.forEach((e,i)=>{
+    const r=e.cv.getBoundingClientRect();
+    const ex=r.left+r.width/2, ey=r.top+r.height/2;
+    let dx=(mx-ex)/(innerWidth*0.5), dy=(my-ey)/(innerHeight*0.5);
+    dx=Math.max(-1,Math.min(1,dx)); dy=Math.max(-1,Math.min(1,dy));
+    e.lx+=(dx-e.lx)*0.15; e.ly+=(dy-e.ly)*0.15;
+    drawEye(e.ctx,e.cv.width,e.cv.height,e.lx,e.ly,0.92*blink+0.04,i===0?glitchRow:-1);
+  });
+  if(t-last>80&&coords){coords.textContent=`X ${String(Math.round(mx)).padStart(4,'0')} / Y ${String(Math.round(my)).padStart(4,'0')}`;last=t;}
+  // grid
+  gx.clearRect(0,0,g.width,g.height);
+  if(moved){const c=Math.floor(mx/CELL), r=Math.floor(my/CELL);
+    for(let yy=-2;yy<=2;yy++)for(let xx=-2;xx<=2;xx++){const cc=c+xx, rr=r+yy; if(cc<0||rr<0||cc>=cols||rr>=rows) continue; const d=Math.hypot(xx,yy); const k=rr*cols+cc; heat[k]=Math.max(heat[k],Math.max(0,1-d/2.6)*(Math.random()*.4+.6));}
+    moved=false;}
+  if(!reduce && Math.random()<.25){heat[Math.floor(Math.random()*heat.length)]=.5;}
+  for(let k=0;k<heat.length;k++){const h=heat[k]; if(h<0.01){continue;}
+    const x=(k%cols)*CELL, y=Math.floor(k/cols)*CELL;
+    gx.fillStyle=(k%3===0)?`rgba(31,229,255,${h*0.35})`:`rgba(255,46,136,${h*0.3})`;
+    gx.fillRect(x+1,y+1,CELL-2,CELL-2); heat[k]*=0.94;}
+  // faint static grid
+  gx.fillStyle='rgba(242,236,255,0.035)';
+  for(let x=0;x<cols;x++) gx.fillRect(x*CELL,0,1,g.height);
+  for(let y=0;y<rows;y++) gx.fillRect(0,y*CELL,g.width,1);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+})();
+</script>
 
 </body>
-
 </html>
