@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Chris Robbins</title>
 <meta name="description" content="Chris Robbins — developer and designer. Selected work: Brat Lab, Muralist, Reel Recall, Convo, Why Is This Light On, AdKicker.">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/img/icons/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/img/icons/favicon-16.png">
-<link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16.png">
+<link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#0c0716">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://chrisrobbins.io/">
@@ -209,7 +209,7 @@ main,header,footer{position:relative;z-index:2}
   .tag{top:auto;bottom:-6%;right:4px}
   .idcard{max-width:340px}
 }
-@media (max-width:480px){.hud{font-size:14px;padding:6px 8px}.links{gap:12px;font-size:19px}.logo span{display:none}}
+@media (max-width:480px){.sh{font-size:15vw}.name{font-size:17vw}.hud{font-size:14px;padding:6px 8px}.links{gap:12px;font-size:19px}.logo span{display:none}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
@@ -338,6 +338,22 @@ list.innerHTML = PROJECTS.map((p,i)=>`
       <ul class="chips">${p.tags.map(t=>`<li>${t}</li>`).join('')}</ul>
     </div>
   </li>`).join('');
+
+/* ---------- keep giant type inside the screen ---------- */
+function fitType(){
+  document.querySelectorAll('.sh,.name').forEach(el=>{
+    el.style.fontSize='';
+    const cs=getComputedStyle(el);let fs=parseFloat(cs.fontSize),n=0;
+    const over=()=>{const r=el.getBoundingClientRect(),right=r.right-parseFloat(cs.paddingRight);
+      let m=0;el.querySelectorAll('.glitch,span:not(:has(span))').forEach(c=>{m=Math.max(m,c.getBoundingClientRect().right)});
+      return m>right+1||el.scrollWidth>el.clientWidth+12;};
+    while(over()&&n++<40){fs*=.96;el.style.fontSize=fs+'px';}
+  });
+}
+fitType();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitType);
+addEventListener('load',()=>{fitType();setTimeout(fitType,1500);});
+let fitTimer;addEventListener('resize',()=>{clearTimeout(fitTimer);fitTimer=setTimeout(fitType,120)});
 
 /* ---------- tickers ---------- */
 document.querySelectorAll('.ticker .track').forEach(t=>{
