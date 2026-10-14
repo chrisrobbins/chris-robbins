@@ -44,7 +44,7 @@ main,header,footer{position:relative;z-index:2}
 /* nav */
 .nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px var(--gutter);background:rgba(12,7,22,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-pixel);font-size:26px;letter-spacing:.04em}
-.logo canvas{width:44px;height:26px;image-rendering:pixelated}
+.logo canvas{width:46px;height:28px}
 .links{display:flex;gap:clamp(12px,2.5vw,36px);list-style:none;margin:0;padding:0;font-family:var(--f-pixel);font-size:22px;text-transform:uppercase}
 .links a{text-decoration:none;position:relative}
 .links a::before{content:"> ";color:var(--hot);opacity:0;transition:opacity .15s}
@@ -69,16 +69,16 @@ main,header,footer{position:relative;z-index:2}
 .tag{font-family:var(--f-tag);color:var(--hot);font-size:clamp(34px,6vw,96px);transform:rotate(-8deg);position:absolute;right:clamp(4px,6vw,120px);top:52%;line-height:1;text-shadow:3px 3px 0 var(--void),0 0 22px rgba(255,46,136,.55);pointer-events:none;white-space:nowrap}
 .tag::after{content:"";display:block;width:6px;height:36px;margin:-4px 0 0 34%;background:linear-gradient(var(--hot),transparent);border-radius:3px;opacity:.8}
 
-.ticker{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding-block:12px;margin-block:clamp(18px,3vw,36px);font-family:var(--f-display);font-weight:400;font-size:clamp(16px,1.8vw,26px);text-transform:uppercase;position:relative;z-index:2;background:rgba(12,7,22,.55)}
-.ticker .track{display:inline-flex;gap:2.2em;animation:tick 32s linear infinite;padding-right:2.2em}
+.ticker{overflow:hidden;white-space:nowrap;padding-block:6px;margin-block:clamp(18px,3vw,40px);font-family:var(--f-display);font-weight:700;font-size:clamp(22px,3.2vw,48px);letter-spacing:-.02em;text-transform:uppercase;position:relative;z-index:2;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.ticker .track{display:inline-flex;align-items:center;gap:.7em;animation:tick 60s linear infinite;padding-right:.7em}
 .ticker.rev .track{animation-direction:reverse}
-.ticker i{font-style:normal;color:var(--hot)}
-.ticker.alt i{color:var(--wire)}
+.ticker span:nth-of-type(even){color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+.ticker i{font-style:normal;font-weight:400;color:var(--hot);font-size:.9em}
 @keyframes tick{to{transform:translateX(-50%)}}
 
 .intro{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center;padding-block:clamp(16px,3vw,40px) clamp(40px,7vw,100px)}
-.eyebox{position:relative;border:1px solid var(--line);background:rgba(22,13,38,.7);aspect-ratio:16/10;max-width:100%}
-.eyebox canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+.eyebox{position:relative;border:1px solid var(--line);background:radial-gradient(circle at 50% 50%,rgba(138,75,255,.18),transparent 60%),var(--void-2);aspect-ratio:16/10;max-width:100%;display:grid;place-items:center}
+.eyebox .creature{position:absolute;inset:0;width:100%;height:100%;display:block}
 .hud{position:absolute;font-family:var(--f-pixel);font-size:18px;color:var(--wire);line-height:1;padding:10px 12px}
 .hud.tl{top:0;left:0}.hud.br{bottom:0;right:0;color:var(--muted)}.hud.tr{top:0;right:0;color:var(--hot)}
 .corner{position:absolute;width:18px;height:18px;border-color:var(--wire);border-style:solid}
@@ -103,26 +103,18 @@ main,header,footer{position:relative;z-index:2}
 .proj .meta{grid-column:9 / span 4}
 .proj:nth-child(even) .card{grid-column:5 / span 8;grid-row:1}
 .proj:nth-child(even) .meta{grid-column:1 / span 4;grid-row:1;text-align:right}
-.card{display:block;position:relative;aspect-ratio:16/10;max-width:100%;overflow:hidden;border:1px solid var(--line);text-decoration:none;cursor:none;isolation:isolate}
+.card{display:block;position:relative;aspect-ratio:16/10;max-width:100%;overflow:hidden;border:1px solid var(--line);text-decoration:none;cursor:pointer;isolation:isolate}
 .cover{position:absolute;inset:0;display:flex;align-items:flex-end;padding:clamp(14px,2vw,26px);transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .3s}
 .cover .big{font-family:var(--f-display);font-weight:900;text-transform:uppercase;line-height:.85;font-size:clamp(40px,8.5vw,150px);letter-spacing:-.04em;position:relative;z-index:2;mix-blend-mode:normal}
 .cover .hudline{position:absolute;top:clamp(12px,1.6vw,22px);left:clamp(14px,2vw,26px);right:clamp(14px,2vw,26px);display:flex;justify-content:space-between;font-family:var(--f-pixel);font-size:clamp(16px,1.4vw,22px);z-index:2}
 .cover .art{position:absolute;inset:0;z-index:1}
-.card:hover .cover,.card:focus-visible .cover{transform:scale(1.04);filter:saturate(1.3) hue-rotate(-12deg)}
-/* the original eyeball hover */
-.eyeover{position:absolute;inset:0;z-index:5;opacity:0;transition:opacity .5s ease;background:linear-gradient(rgba(12,7,22,.55),rgba(12,7,22,.55)),url("img/noise_pattern_dark.png"),var(--void-2);background-blend-mode:normal,luminosity,normal;display:grid;place-items:center}
-.card:hover .eyeover,.card:focus-visible .eyeover{opacity:.92}
-.eyeover .ec{display:grid;place-items:center;width:100%;height:100%}
-.eyeover img{width:clamp(110px,14vw,190px);height:auto;image-rendering:auto;filter:drop-shadow(0 0 18px rgba(255,46,136,.6))}
-.card:hover .ec{animation:vibrate .1s infinite}
+/* original portfolio hover, restored as it was */
+.portfolio-hover{position:absolute;inset:0;z-index:5;background-image:url("img/noise_pattern_dark.png");opacity:0;transition:all ease .5s}
+.portfolio-hover:hover,.card:focus-visible .portfolio-hover{opacity:.9}
+.portfolio-hover-content{width:100%;height:100%;display:grid;place-items:center}
+.portfolio-hover-content:hover,.portfolio-hover-content:focus{animation:vibrate .1s infinite}
 @keyframes vibrate{50%{transform:rotate(2deg) translateX(2px)}100%{transform:rotate(-2deg) translateX(-2px)}}
-.eyeover .look{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-family:var(--f-pixel);font-size:22px;color:var(--wire);letter-spacing:.2em;white-space:nowrap}
-/* glitch slices on hover */
-.card .slice{position:absolute;left:0;right:0;z-index:4;pointer-events:none;opacity:0;mix-blend-mode:screen}
-.card:hover .slice{animation:slc .9s steps(1) infinite}
-.slice.s1{top:22%;height:7%;background:var(--wire)}
-.slice.s2{top:61%;height:4%;background:var(--hot);animation-delay:.3s!important}
-@keyframes slc{0%{opacity:0}10%{opacity:.5;transform:translateX(-6%)}20%{opacity:0}60%{opacity:.35;transform:translateX(9%)}70%{opacity:0}}
+.eyeball{position:relative;max-width:none}
 
 .meta .num{font-family:var(--f-pixel);font-size:26px;color:var(--hot)}
 .meta h3{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,2.8vw,44px);line-height:1.02;margin:.15em 0 .35em;text-wrap:balance;letter-spacing:-.02em}
@@ -163,7 +155,7 @@ main,header,footer{position:relative;z-index:2}
 .dossier{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:clamp(24px,5vw,80px);margin-top:clamp(24px,4vw,56px);align-items:start}
 .idcard{border:1px solid var(--line);background:var(--void-2);padding:16px;font-family:var(--f-pixel);font-size:20px;position:relative}
 .idcard .photo{aspect-ratio:1;max-width:100%;background:repeating-linear-gradient(0deg,#1d1131 0 6px,#251640 6px 12px);display:grid;place-items:center;position:relative;overflow:hidden;margin-bottom:12px}
-.idcard .photo canvas{width:70%;image-rendering:pixelated}
+.idcard .photo .creature{position:absolute;inset:0;width:100%;height:100%;display:block}
 .redact{position:absolute;left:10%;right:10%;bottom:10%;background:var(--hot);color:var(--void);text-align:center;font-size:24px;letter-spacing:.2em;transform:rotate(-4deg)}
 .idcard dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:0}
 .idcard dt{color:var(--muted)}
@@ -216,7 +208,7 @@ main,header,footer{position:relative;z-index:2}
 <div id="cur" aria-hidden="true"></div>
 
 <header class="nav">
-  <a class="logo" href="#top" aria-label="Chris Robbins, home"><canvas id="logoEye" width="22" height="13"></canvas><span>C.R/</span></a>
+  <a class="logo" href="#top" aria-label="Chris Robbins, home"><canvas id="logoEye" aria-hidden="true"></canvas><span>C.R/</span></a>
   <div class="status"><i class="dot"></i><span id="clock">ATX 00:00:00</span></div>
   <ul class="links">
     <li><a href="#work" data-scramble>Work</a></li>
@@ -231,17 +223,15 @@ main,header,footer{position:relative;z-index:2}
       <span><span class="glitch" data-text="Chris">Chris</span></span>
       <span class="r2"><span class="glitch" data-text="Robbins">Robbins</span></span>
     </h1>
-    <div class="tag" aria-hidden="true">i see you</div>
   </section>
 
-  <div class="ticker" aria-hidden="true"><div class="track" data-words="Developer,Designer,Builder,Tinkerer,Ex-Audio Engineer,Pixel Pusher"></div></div>
+  <div class="ticker" aria-hidden="true"><div class="track" data-words="Developer,Designer,Builder,Ex-Audio Engineer"></div></div>
 
   <section class="intro wrap" aria-label="About in brief">
     <div class="eyebox">
-      <canvas id="bigEye" width="64" height="40" aria-label="A pixel eyeball that follows your cursor" role="img"></canvas>
+      <canvas class="creature" role="img" aria-label="A bloodshot eyeball standing on its veins, slithering after your cursor"></canvas>
       <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-      <span class="hud tl">CAM_01 // TRACKING</span>
-      <span class="hud tr">● REC</span>
+      <span class="hud tl">TRACKING_</span>
       <span class="hud br" id="coords">X 000 / Y 000</span>
     </div>
     <div>
@@ -254,7 +244,6 @@ main,header,footer{position:relative;z-index:2}
 
   <section class="work" id="work" aria-labelledby="workh">
     <h2 class="sh wrap" id="workh" aria-label="Work"><span class="px"></span><span>W</span><span class="ghost">O</span><span>R</span><span>K</span></h2>
-    <div class="ticker rev alt" aria-hidden="true"><div class="track" data-words="Apps,Experiments,Interfaces,Motion,Glitches on purpose,Side quests"></div></div>
     <ol class="projects wrap" id="projects"></ol>
   </section>
 
@@ -262,7 +251,7 @@ main,header,footer{position:relative;z-index:2}
     <h2 class="sh wrap" id="abouth" aria-label="About"><span>A</span><span class="ghost">B</span><span>O</span><span>U</span><span>T</span><span class="px"></span></h2>
     <div class="dossier wrap">
       <aside class="idcard" aria-label="Profile card">
-        <div class="photo"><canvas id="idEye" width="22" height="13"></canvas><div class="redact">[ REDACTED ]</div></div>
+        <div class="photo"><canvas class="creature" aria-hidden="true"></canvas><div class="redact">[ REDACTED ]</div></div>
         <dl>
           <dt>HANDLE</dt><dd>C.R/</dd>
           <dt>CLASS</dt><dd>DEV + DESIGN</dd>
@@ -283,7 +272,7 @@ main,header,footer{position:relative;z-index:2}
     </div>
   </section>
 
-  <div class="ticker" aria-hidden="true"><div class="track" data-words="Got a weird idea?,Let's build it,Got a weird idea?,Let's build it"></div></div>
+  <div class="ticker rev" aria-hidden="true"><div class="track" data-words="Got a weird idea?,Let's build it"></div></div>
 
   <section class="contact" id="contact" aria-labelledby="contacth">
     <h2 class="sh wrap" id="contacth" aria-label="Connect"><span>C</span><span class="ghost">O</span><span>N</span><span>N</span><span class="px"></span><span>E</span><span>C</span><span>T</span></h2>
@@ -323,8 +312,7 @@ list.innerHTML = PROJECTS.map((p,i)=>`
         <div class="hudline"><span>FILE_${String(i+1).padStart(3,'0')}</span><span>${p.file}</span></div>
         <div class="big">${p.word}</div>
       </div>
-      <span class="slice s1"></span><span class="slice s2"></span>
-      <div class="eyeover"><div class="ec"><img src="${EYE_SRC}" alt=""></div><span class="look">// OPEN CASE FILE</span></div>
+      <div class="portfolio-hover"><div class="portfolio-hover-content"><img src="${EYE_SRC}" class="eyeball" alt=""></div></div>
     </a>
     <div class="meta">
       <div class="num">${String(i+1).padStart(2,'0')} /</div>
@@ -337,7 +325,7 @@ list.innerHTML = PROJECTS.map((p,i)=>`
 /* ---------- tickers ---------- */
 document.querySelectorAll('.ticker .track').forEach(t=>{
   const w = t.dataset.words.split(',');
-  const one = w.map(x=>`<span>${x}</span><i>✶</i>`).join('');
+  const one = w.map(x=>`<span>${x}</span><i>/</i>`).join('');
   t.innerHTML = one+one+one+one;
 });
 
@@ -361,45 +349,144 @@ addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;moved=true;},{passi
 /* ---------- cursor ---------- */
 const cur=document.getElementById('cur');
 addEventListener('pointermove',e=>{cur.style.transform=`translate(${e.clientX}px,${e.clientY}px)`},{passive:true});
-document.addEventListener('pointerover',e=>{cur.classList.toggle('big',!!e.target.closest('.card'))});
+document.addEventListener('pointerover',e=>{cur.hidden=!!e.target.closest('.card')});
 
-/* ---------- pixel eye renderer ---------- */
-function drawEye(ctx,W,H,lookX,lookY,open,glitchRow){
-  ctx.clearRect(0,0,W,H);
-  const cx=W/2, cy=H/2, rx=W*0.46, ry=H*0.46;
-  const ir=Math.min(W,H)*0.30, pr=ir*0.45;
-  const ix=cx+lookX*rx*0.42, iy=cy+lookY*ry*0.30;
-  for(let y=0;y<H;y++){
-    const shift = (glitchRow>=0 && Math.abs(y-glitchRow)<2) ? Math.round(W*0.06) : 0;
-    for(let x=0;x<W;x++){
-      const u=(x+.5-cx)/rx, v=(y+.5-cy)/ry;
-      const lid=(1-u*u)*open;
-      if(Math.abs(u)>1) continue;
-      const inside=Math.abs(v)<lid;
-      const edge=!inside && Math.abs(v)<lid+0.16;
-      let c=null;
-      if(edge) c='#f2ecff';
-      else if(inside){
-        const d=Math.hypot(x+.5-ix,(y+.5-iy));
-        if(d<pr) c='#0c0716';
-        else if(d<ir*0.72) c='#ff2e88';
-        else if(d<ir) c=((x+y)%2)?'#1fe5ff':'#14b8d4';
-        else c=(Math.abs(v)>lid*0.7)?'#3a2560':'#e9e1ff';
-        if(Math.hypot(x+.5-(ix-pr*0.5),y+.5-(iy-pr*0.6))<Math.max(1,pr*0.35)) c='#ffffff';
-        // veins
-        if(!c||c==='#e9e1ff'){ if(((x*7+y*13)%23===0) && Math.abs(u)>.55) c='#ff2e88'; }
-      }
-      if(c){ctx.fillStyle=c;ctx.fillRect(x+shift,y,1,1);}
-    }
+/* ---------- gross eyeball creature ---------- */
+const DPR=Math.min(2,devicePixelRatio||1);
+let lastMove=-1e9; addEventListener('pointermove',()=>{lastMove=performance.now()},{passive:true});
+const rnd=seed=>()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+function makeCaps(seed){
+  const r=rnd(seed),caps=[];
+  for(let i=0;i<16;i++){
+    const a=r()*Math.PI*2; let x=Math.cos(a),y=Math.sin(a),ang=a+Math.PI; const pts=[[x,y]];
+    const len=3+Math.floor(r()*5);
+    for(let j=0;j<len;j++){ang+=(r()-.5)*1.3;const st=.07+r()*.07;x+=Math.cos(ang)*st;y+=Math.sin(ang)*st;pts.push([x,y]);if(Math.hypot(x,y)<.5)break;}
+    caps.push({pts,w:r()*.7+.3});
   }
+  return caps;
 }
-function eyeCanvas(id){
-  const cv=document.getElementById(id), ctx=cv.getContext('2d');
-  const st={cv,ctx,lx:0,ly:0,open:1,blinkT:0,g:-1};
-  return st;
+function drawEyeball(ctx,R,lx,ly,caps,t){
+  const ow=Math.max(1.4,R*.07);
+  ctx.beginPath();ctx.arc(0,0,R,0,7);
+  const g=ctx.createRadialGradient(-R*.35,-R*.4,R*.05,0,0,R);
+  g.addColorStop(0,'#fffaf2');g.addColorStop(.5,'#f1e4d2');g.addColorStop(.82,'#e4b4aa');g.addColorStop(1,'#a8475a');
+  ctx.fillStyle=g;ctx.fill();
+  ctx.save();ctx.clip();
+  ctx.lineCap='round';ctx.lineJoin='round';
+  caps.forEach(c=>{ctx.beginPath();c.pts.forEach(([px,py],i)=>i?ctx.lineTo(px*R,py*R):ctx.moveTo(px*R,py*R));ctx.strokeStyle='rgba(170,18,42,.8)';ctx.lineWidth=Math.max(.5,R*.04*c.w);ctx.stroke();});
+  const ix=lx*R*.4, iy=ly*R*.4, ir=R*.5;
+  ctx.beginPath();ctx.arc(ix,iy,ir*1.14,0,7);ctx.fillStyle='rgba(150,30,50,.22)';ctx.fill();
+  const ig=ctx.createRadialGradient(ix,iy,ir*.15,ix,iy,ir);
+  ig.addColorStop(0,'#c2b94f');ig.addColorStop(.45,'#7f8a2e');ig.addColorStop(.85,'#43481a');ig.addColorStop(1,'#16150a');
+  ctx.beginPath();ctx.arc(ix,iy,ir,0,7);ctx.fillStyle=ig;ctx.fill();
+  ctx.strokeStyle='rgba(24,22,6,.6)';ctx.lineWidth=Math.max(.5,R*.022);
+  for(let a=0;a<6.28;a+=.3){ctx.beginPath();ctx.moveTo(ix+Math.cos(a)*ir*.4,iy+Math.sin(a)*ir*.4);ctx.lineTo(ix+Math.cos(a+.12)*ir*.96,iy+Math.sin(a+.12)*ir*.96);ctx.stroke();}
+  ctx.beginPath();ctx.arc(ix,iy,ir,0,7);ctx.strokeStyle='#120a06';ctx.lineWidth=Math.max(1,R*.05);ctx.stroke();
+  const pr=ir*(.42+(reduce?0:Math.sin(t*.0009)*.06));
+  ctx.beginPath();ctx.arc(ix,iy,pr,0,7);ctx.fillStyle='#06030a';ctx.fill();
+  ctx.beginPath();ctx.ellipse(ix-ir*.33,iy-ir*.38,ir*.2,ir*.13,-.6,0,7);ctx.fillStyle='rgba(255,255,255,.92)';ctx.fill();
+  ctx.beginPath();ctx.ellipse(-R*.48,-R*.52,R*.17,R*.08,-.75,0,7);ctx.fillStyle='rgba(255,255,255,.55)';ctx.fill();
+  ctx.restore();
+  ctx.beginPath();ctx.arc(0,0,R,0,7);ctx.strokeStyle='#12060c';ctx.lineWidth=ow;ctx.stroke();
 }
-const eyes=['bigEye','logoEye','idEye'].map(eyeCanvas);
-let nextBlink=performance.now()+2500;
+const look=(cx,cy,R)=>{let dx=mx-cx,dy=my-cy;const d=Math.hypot(dx,dy);const k=Math.min(1,d/(R*6))/(d||1);return[dx*k,dy*k]};
+const STALK_VEINS=[{c:'#3f45a6',ph:0,o:.55},{c:'#4a0614',ph:2.1,o:-.4},{c:'#2f2a7a',ph:4.2,o:.15}];
+// filled, tapered tube along a centerline
+function tube(ctx,P,Wd,fill,shift=0){
+  const L=[],Rr=[];
+  for(let i=0;i<P.length;i++){
+    const a=P[Math.max(0,i-1)],c=P[Math.min(P.length-1,i+1)];let nx=-(c.y-a.y),ny=c.x-a.x;const l=Math.hypot(nx,ny)||1;nx/=l;ny/=l;
+    const w=Wd[i];L.push([P[i].x+nx*(w+shift),P[i].y+ny*(w+shift)]);Rr.push([P[i].x-nx*(w-shift),P[i].y-ny*(w-shift)]);
+  }
+  const pts=L.concat(Rr.reverse());
+  ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);
+  for(let i=1;i<pts.length-1;i++){const mx2=(pts[i][0]+pts[i+1][0])/2,my2=(pts[i][1]+pts[i+1][1])/2;ctx.quadraticCurveTo(pts[i][0],pts[i][1],mx2,my2);}
+  ctx.closePath();ctx.fillStyle=fill;ctx.fill();
+}
+function fleshy(ctx,P,Wd,t,veins=true){
+  const n=P.length;
+  tube(ctx,P,Wd.map(w=>w+1.6),'#12060c');
+  tube(ctx,P,Wd,'#8c1a2e');
+  tube(ctx,P,Wd.map(w=>w*.55),'#b8324a',-0.0);
+  tube(ctx,P,Wd.map(w=>w*.22),'rgba(255,190,200,.45)',0);
+  if(!veins) return;
+  ctx.lineCap='round';
+  STALK_VEINS.forEach(v=>{
+    ctx.beginPath();
+    for(let i=0;i<n;i++){
+      const a=P[Math.max(0,i-1)],c=P[Math.min(n-1,i+1)];let nx=-(c.y-a.y),ny=c.x-a.x;const l=Math.hypot(nx,ny)||1;nx/=l;ny/=l;
+      const o=(v.o+.3*Math.sin(i*.35+v.ph))*Wd[i];
+      const x=P[i].x+nx*o,y=P[i].y+ny*o; i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    }
+    ctx.lineWidth=Math.max(.8,Wd[0]*.16);ctx.strokeStyle=v.c;ctx.globalAlpha=.85;ctx.stroke();ctx.globalAlpha=1;
+  });
+}
+function Creature(cv,seed){
+  const ctx=cv.getContext('2d'),N=22,pts=[],caps=makeCaps(seed),r=rnd(seed+11);
+  const roots=[-1,-.45,.4,1].map(s=>({s,len:.55+r()*.35,curl:.6+r()*.6}));
+  let W=1,H=1,seg=1,tx=0,ty=0,lx=0,ly=0;
+  function size(){const b=cv.getBoundingClientRect();W=Math.max(1,b.width);H=Math.max(1,b.height);cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+    seg=(H*.52)/(N-1);pts.length=0;for(let i=0;i<N;i++)pts.push({x:W/2,y:H*.86-i*seg});tx=W/2;ty=H*.4;}
+  size();if(window.ResizeObserver)new ResizeObserver(size).observe(cv);
+  return {step(t){
+    const b=cv.getBoundingClientRect();if(b.bottom<0||b.top>innerHeight)return;
+    const R=Math.min(W,H)*.115;
+    let gx,gy;
+    if(t-lastMove>2500){gx=W/2+Math.sin(t*.0004)*W*.25;gy=H*.36+Math.sin(t*.0006)*H*.08;}
+    else{gx=mx-b.left;gy=my-b.top;}
+    gx=Math.max(R+10,Math.min(W-R-10,gx));gy=Math.max(R+10,Math.min(H*.55,gy));
+    tx+=(gx-tx)*.035;ty+=(gy-ty)*.035;
+    const base={x:W/2,y:H*.86};
+    for(let i=1;i<N;i++)pts[i].y-=seg*.25*(1-i/N);
+    pts[N-1].x=tx;pts[N-1].y=ty;
+    for(let i=N-2;i>=0;i--){const a=pts[i],c=pts[i+1],d=Math.hypot(a.x-c.x,a.y-c.y)||1;a.x=c.x+(a.x-c.x)/d*seg;a.y=c.y+(a.y-c.y)/d*seg;}
+    pts[0].x=base.x;pts[0].y=base.y;
+    for(let i=1;i<N;i++){const a=pts[i],c=pts[i-1],d=Math.hypot(a.x-c.x,a.y-c.y)||1;a.x=c.x+(a.x-c.x)/d*seg;a.y=c.y+(a.y-c.y)/d*seg;}
+    const amp=reduce?0:R*.32,ts=t*.0016,q=[];
+    for(let i=0;i<N;i++){
+      const a=pts[Math.max(0,i-1)],c=pts[Math.min(N-1,i+1)];let nx=-(c.y-a.y),ny=c.x-a.x;const l=Math.hypot(nx,ny)||1;nx/=l;ny/=l;
+      const o=Math.sin(ts-i*.45)*amp*Math.sin(Math.PI*i/(N-1));
+      q.push({x:pts[i].x+nx*o,y:pts[i].y+ny*o});
+    }
+    ctx.clearRect(0,0,W,H);
+    // blood puddle
+    ctx.beginPath();ctx.ellipse(base.x,base.y+R*.1,R*2.3,R*.3,0,0,7);ctx.fillStyle='rgba(120,10,35,.45)';ctx.fill();
+    ctx.beginPath();ctx.ellipse(base.x+R*.6,base.y+R*.14,R*.9,R*.12,0,0,7);ctx.fillStyle='rgba(190,30,60,.3)';ctx.fill();
+    // roots: tapered tendrils curling onto the floor
+    roots.forEach(rt=>{
+      const P=[],Wd=[],M=12;
+      for(let j=0;j<M;j++){const u=j/(M-1);const x=base.x+rt.s*R*(.15+u*2.2*rt.len);const y=base.y+R*.08-Math.sin(u*Math.PI*.9)*R*.25*rt.curl*(u>.7?1.6:1)+(u<.15?-R*.2*(1-u/.15):0);
+        P.push({x,y});Wd.push(R*.2*(1-u)+.8);}
+      fleshy(ctx,P,Wd,t,false);
+    });
+    // stalk with a slow pulse travelling up
+    const Wd=q.map((_,i)=>{const u=i/(N-1);const pulse=reduce?0:.12*Math.max(0,Math.sin(t*.0025-i*.3))**4;return R*(.3-.12*u)*(1+pulse)});
+    fleshy(ctx,q,Wd,t,true);
+    // eyeball on top
+    const h=q[N-1],p=q[N-2],dx=h.x-p.x,dy=h.y-p.y,dl=Math.hypot(dx,dy)||1;
+    const ex=h.x+dx/dl*R*.8,ey=h.y+dy/dl*R*.8;
+    const [llx,lly]=look(b.left+ex,b.top+ey,R);lx+=(llx-lx)*.12;ly+=(lly-ly)*.12;
+    ctx.save();ctx.translate(ex,ey);ctx.rotate(reduce?0:Math.sin(t*.0009)*.06);drawEyeball(ctx,R,lx,ly,caps,t);ctx.restore();
+  }};
+}
+function LogoEye(cv){
+  const ctx=cv.getContext('2d'),caps=makeCaps(99);let W=46,H=28,lx=0,ly=0;
+  cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+  return {step(t){
+    const b=cv.getBoundingClientRect(),R=H*.36,ex=R+3,ey=H/2;
+    ctx.clearRect(0,0,W,H);ctx.lineCap='round';
+    // dangling veins trailing off the back
+    [['#7b0f22',0],['#d02c45',1.7],['#3c3f93',3.1]].forEach(([c,ph],k)=>{
+      for(const pass of [0,1]){ctx.beginPath();ctx.moveTo(ex+R*.6,ey+(k-1)*2);
+        for(let x=0;x<=18;x+=3){ctx.lineTo(ex+R*.6+x+4,ey+(k-1)*2.5+Math.sin(t*.0025+x*.35+ph)*(x/18)*4);}
+        ctx.lineWidth=pass?1.6:3.2;ctx.strokeStyle=pass?c:'#12060c';ctx.stroke();}
+    });
+    const [llx,lly]=look(b.left+ex,b.top+ey,R*3);lx+=(llx-lx)*.2;ly+=(lly-ly)*.2;
+    ctx.save();ctx.translate(ex,ey);drawEyeball(ctx,R,lx,ly,caps,t);ctx.restore();
+  }};
+}
+const creatures=[...document.querySelectorAll('canvas.creature')].map((c,i)=>Creature(c,7+i*31));
+const logoEye=LogoEye(document.getElementById('logoEye'));
 
 /* ---------- reactive pixel grid ---------- */
 const g=document.getElementById('grid'), gx=g.getContext('2d');
@@ -426,18 +513,7 @@ document.querySelectorAll('[data-scramble]').forEach(a=>{
 const coords=document.getElementById('coords');
 let last=0;
 function frame(t){
-  // blink scheduling
-  let blink=1;
-  if(t>nextBlink){const p=(t-nextBlink)/180; if(p>=1){nextBlink=t+2200+Math.random()*3500;} else blink=Math.abs(1-p*2);}
-  const glitchRow=(!reduce && Math.random()<0.03)?Math.floor(Math.random()*40):-1;
-  eyes.forEach((e,i)=>{
-    const r=e.cv.getBoundingClientRect();
-    const ex=r.left+r.width/2, ey=r.top+r.height/2;
-    let dx=(mx-ex)/(innerWidth*0.5), dy=(my-ey)/(innerHeight*0.5);
-    dx=Math.max(-1,Math.min(1,dx)); dy=Math.max(-1,Math.min(1,dy));
-    e.lx+=(dx-e.lx)*0.15; e.ly+=(dy-e.ly)*0.15;
-    drawEye(e.ctx,e.cv.width,e.cv.height,e.lx,e.ly,0.92*blink+0.04,i===0?glitchRow:-1);
-  });
+  creatures.forEach(c=>c.step(t)); logoEye.step(t);
   if(t-last>80&&coords){coords.textContent=`X ${String(Math.round(mx)).padStart(4,'0')} / Y ${String(Math.round(my)).padStart(4,'0')}`;last=t;}
   // grid
   gx.clearRect(0,0,g.width,g.height);
