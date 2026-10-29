@@ -198,6 +198,58 @@ main,header,footer{position:relative;z-index:2}
 .handles a:hover,.handles a:focus-visible{color:var(--wire);padding-left:12px}
 .foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:24px;font-family:var(--f-pixel);font-size:20px;color:var(--muted)}
 
+
+/* ---------- case file (project detail) ---------- */
+.cover-icon{position:absolute;z-index:2;right:7%;top:50%;width:34%;max-width:220px;height:auto;transform:translateY(-50%) rotate(-7deg);filter:drop-shadow(0 18px 30px rgba(12,7,22,.55));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.card:hover .cover-icon{transform:translateY(-54%) rotate(-3deg) scale(1.04)}
+html.case-open{overflow:hidden}
+.case{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--void);color:var(--ink);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+.case::backdrop{background:rgba(12,7,22,.8)}
+.case[open]{animation:caseIn .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes caseIn{0%{opacity:0;transform:translateY(24px);filter:hue-rotate(60deg) saturate(2)}40%{filter:none}100%{opacity:1;transform:none}}
+.case::before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(rgba(242,236,255,.035) 1px,transparent 1px) 0 0/30px 30px,linear-gradient(90deg,rgba(242,236,255,.035) 1px,transparent 1px) 0 0/30px 30px,radial-gradient(circle at 20% 10%,rgba(255,46,136,.16),transparent 45%)}
+.case-bar{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px var(--gutter);padding-top:calc(14px + env(safe-area-inset-top,0px));background:rgba(12,7,22,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);font-family:var(--f-pixel);font-size:20px}
+.case-back{all:unset;cursor:pointer;font-family:var(--f-pixel);font-size:22px;text-transform:uppercase;color:var(--ink);display:inline-flex;gap:8px;align-items:center}
+.case-back:hover,.case-back:focus-visible{color:var(--wire)}
+.case-back:focus-visible{outline:2px dashed var(--wire);outline-offset:4px}
+.case-bar .file{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.case-body{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:clamp(28px,5vw,72px) var(--gutter) clamp(48px,7vw,100px);display:grid;gap:clamp(40px,6vw,80px)}
+.case-hero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center}
+.case-icon{width:clamp(120px,18vw,230px);height:auto;filter:drop-shadow(0 20px 40px rgba(255,46,136,.35));animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-1.5deg)}}
+.case h2:focus{outline:none}
+.case-eyebrow{font-family:var(--f-pixel);font-size:22px;color:var(--hot);margin:0 0 6px}
+.case h2{font-family:var(--f-display);font-weight:900;text-transform:uppercase;font-size:clamp(44px,9vw,140px);line-height:.88;letter-spacing:-.03em;margin:0 0 .18em;overflow-wrap:anywhere}
+.case-lede{font-size:clamp(18px,1.6vw,23px);max-width:40ch;margin:0;color:var(--ink);text-wrap:pretty}
+.dl{position:relative;border:1px solid var(--line);background:rgba(22,13,38,.75);padding:clamp(20px,3.5vw,44px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px)}
+.dl h3{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,2.6vw,38px);line-height:1.05;margin:0 0 .5em;letter-spacing:-.02em}
+.dl h3 em{font-style:normal;color:var(--wire)}
+.specs{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 18px;margin:0 0 26px;font-size:16px}
+.specs dt{font-family:var(--f-pixel);font-size:19px;color:var(--muted);text-transform:uppercase}
+.specs dd{margin:0}
+.dl-btn{display:inline-flex;align-items:center;gap:14px;text-decoration:none;background:var(--hot);color:var(--void);padding:16px 26px 16px 20px;font-family:var(--f-display);font-weight:700;font-size:clamp(17px,1.6vw,21px);box-shadow:6px 6px 0 var(--wire);transition:transform .15s,box-shadow .15s;cursor:pointer}
+.dl-btn svg{width:28px;height:28px;flex:none}
+.dl-btn small{display:block;font-family:var(--f-pixel);font-weight:400;font-size:18px;opacity:.8;letter-spacing:.02em}
+.dl-btn:hover,.dl-btn:focus-visible{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--wire)}
+.dl-btn:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--wire)}
+.dl-btn.got{animation:gulp .5s}
+@keyframes gulp{30%{transform:scale(.94) rotate(-1deg)}60%{transform:scale(1.04)}}
+.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;gap:14px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:baseline}
+.steps li::before{content:"0" counter(s);font-family:var(--f-pixel);font-size:26px;color:var(--hot)}
+.steps strong{font-weight:600}
+.steps span{color:var(--muted)}
+.sha{margin-top:22px;font-family:var(--f-pixel);font-size:17px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.sha code{font-family:inherit;color:var(--ink);overflow-wrap:anywhere;min-width:0}
+.sha button{all:unset;cursor:pointer;border:1px solid var(--line);padding:0 8px;color:var(--wire)}
+.sha button:focus-visible{outline:2px dashed var(--wire)}
+.soon{border-top:1px solid var(--line);padding-top:clamp(24px,4vw,40px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:24px;align-items:start}
+.soon h3{font-family:var(--f-display);font-weight:700;font-size:clamp(22px,2.2vw,32px);margin:0}
+.soon p{margin:0 0 14px;color:var(--muted)}
+.redacted{display:grid;gap:8px}
+.redacted i{display:block;height:14px;background:repeating-linear-gradient(90deg,var(--void-2) 0 6px,#251640 6px 12px);border:1px solid var(--line)}
+@media (max-width:820px){.dl,.soon{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){.case-hero{grid-template-columns:minmax(0,1fr)}.case-bar .file{display:none}.dl-btn{width:100%;box-sizing:border-box;justify-content:center}}
 @media (max-width:820px){
   .status{display:none}
   .intro,.dossier,.cta{grid-template-columns:minmax(0,1fr)}
@@ -305,6 +357,8 @@ main,header,footer{position:relative;z-index:2}
   <footer class="foot wrap"><span>© 2026 CHRIS ROBBINS</span><span>ALL SYSTEMS WATCHED_</span></footer>
 </main>
 
+<dialog class="case" id="case" aria-labelledby="caseTitle"></dialog>
+
 <script>
 (() => {
 const EYE_SRC = "img/icon_eye.png";
@@ -313,7 +367,11 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ---------- PROJECTS: edit copy + links here ---------- */
 const PROJECTS = [
   {id:'brat',  title:'Brat <em>Lab</em>',  word:'Brat Lab',   file:'BRAT_LAB.EXE',  desc:'An experimental lab for training, testing and benchmarking models, built in Swift.', tags:['Swift','ML','R&D'], href:'#'},
-  {id:'mural', title:'<em>Muralist</em>',   word:'Muralist',   file:'MURALIST.APP',  desc:'A tool for planning and visualizing murals before a single can gets shaken.', tags:['App','Design'], href:'#'},
+  {id:'mural', title:'<em>Muralist</em>',   word:'Muralist',   file:'MURALIST.APP',  desc:'A tool for planning and visualizing murals before a single can gets shaken.', tags:['macOS App','Design'], href:'#muralist',
+    slug:'muralist', icon:'img/projects/muralist/icon-512.png', kind:'macOS app',
+    download:{href:'downloads/Muralist-1.0.0.dmg', name:'Muralist-1.0.0.dmg', version:'1.0.0', size:'2.9 MB',
+      requires:'macOS 14 Sonoma or later', runs:'Apple Silicon and Intel Macs',
+      sha256:'75d463d8acc9f39f93d4fed8e21fdbde89e292e2b85b2c22adef7262cb6cc387'}},
   {id:'reel',  title:'Reel <em>Recall</em>',word:'Reel Recall',file:'REEL_RECALL',   desc:'For that movie on the tip of your tongue. Describe what you remember and get the title back.', tags:['App','Film'], href:'#'},
   {id:'convo', title:'<em>Convo</em>',      word:'Convo',      file:'CONVO.SYS',     desc:'Conversation, rebuilt. A fresh take on how people talk to each other in an app.', tags:['App','Chat'], href:'#'},
   {id:'light', title:'Why is this light <em>on?</em>', word:'Light On?', file:'WHY_LIGHT_ON', desc:'Point your phone at a mystery warning light and find out what it means.', tags:['App','Utility'], href:'#'},
@@ -323,10 +381,11 @@ const COVER = {brat:'cv-brat',mural:'cv-mural',reel:'cv-reel',convo:'cv-convo',l
 const list = document.getElementById('projects');
 list.innerHTML = PROJECTS.map((p,i)=>`
   <li class="proj">
-    <a class="card" href="${p.href}" aria-label="${p.word}, case file ${String(i+1).padStart(2,'0')}">
+    <a class="card" href="${p.href}"${p.slug?` data-case="${p.slug}"`:''} aria-label="${p.word}, case file ${String(i+1).padStart(2,'0')}">
       <div class="cover ${COVER[p.id]}">
         <div class="art"></div>
         <div class="hudline"><span>FILE_${String(i+1).padStart(3,'0')}</span><span>${p.file}</span></div>
+        ${p.icon?`<img class="cover-icon" src="${p.icon}" alt="" width="512" height="512" loading="lazy">`:''}
         <div class="big">${p.word}</div>
       </div>
       <div class="portfolio-hover"><div class="portfolio-hover-content"><img src="${EYE_SRC}" class="eyeball" alt=""></div></div>
@@ -338,6 +397,82 @@ list.innerHTML = PROJECTS.map((p,i)=>`
       <ul class="chips">${p.tags.map(t=>`<li>${t}</li>`).join('')}</ul>
     </div>
   </li>`).join('');
+
+
+/* ---------- case files (project detail) ---------- */
+const dlg=document.getElementById('case');
+const DL_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M12 3v12"/><path d="M6.5 10 12 15.5 17.5 10"/><path d="M4 20h16"/></svg>';
+function renderCase(p,i){
+  const d=p.download, n=String(i+1).padStart(2,'0');
+  dlg.innerHTML=`
+  <div class="case-bar">
+    <button class="case-back" type="button" data-close>&larr; Back to work</button>
+    <span class="file">FILE_${String(i+1).padStart(3,'0')} // ${p.file}</span>
+  </div>
+  <div class="case-body">
+    <header class="case-hero">
+      <img class="case-icon" src="${p.icon}" alt="${p.word} app icon" width="512" height="512">
+      <div>
+        <p class="case-eyebrow">${n} / ${p.kind.toUpperCase()}</p>
+        <h2 id="caseTitle" tabindex="-1" autofocus>${p.word}</h2>
+        <p class="case-lede">${p.desc}</p>
+      </div>
+    </header>
+    ${d?`<section class="dl" aria-labelledby="dlh">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <div>
+        <h3 id="dlh">Get ${p.word} on <em>your Mac</em></h3>
+        <dl class="specs">
+          <dt>Version</dt><dd>${d.version}</dd>
+          <dt>Size</dt><dd>${d.size}</dd>
+          <dt>Requires</dt><dd>${d.requires}</dd>
+          <dt>Runs on</dt><dd>${d.runs}</dd>
+        </dl>
+        <a class="dl-btn" href="${d.href}" download="${d.name}">${DL_ICON}<span>Download for Mac<small>${d.name} &middot; ${d.size}</small></span></a>
+      </div>
+      <div>
+        <ol class="steps">
+          <li><div><strong>Open the download.</strong> <span>Double-click ${d.name} in your Downloads folder.</span></div></li>
+          <li><div><strong>Drag ${p.word} into Applications.</strong> <span>Drop the app icon on the Applications folder in the window that opens.</span></div></li>
+          <li><div><strong>Launch it.</strong> <span>Open ${p.word} from Applications or Spotlight.</span></div></li>
+        </ol>
+        <p class="sha">SHA-256 <code>${d.sha256}</code><button type="button" data-copy="${d.sha256}">Copy</button></p>
+      </div>
+    </section>`:''}
+    <section class="soon" aria-label="Walkthrough">
+      <h3>Walkthrough</h3>
+      <div><p>Screenshots and the full story behind ${p.word} are on the way.</p>
+      <div class="redacted" aria-hidden="true"><i style="width:92%"></i><i style="width:78%"></i><i style="width:85%"></i><i style="width:40%"></i></div></div>
+    </section>
+  </div>`;
+}
+function openCase(slug,push){
+  const i=PROJECTS.findIndex(p=>p.slug===slug); if(i<0) return;
+  renderCase(PROJECTS[i],i);
+  document.documentElement.classList.add('case-open');
+  if(!dlg.open){ try{dlg.showModal()}catch(e){dlg.setAttribute('open','')} }
+  dlg.scrollTop=0;
+  const t=dlg.querySelector('#caseTitle'); if(t) t.focus({preventScroll:true});
+  if(push) history.pushState({case:slug},'','#'+slug);
+}
+function closeCase(fromPop){
+  if(!dlg.open) return;
+  dlg.close(); document.documentElement.classList.remove('case-open');
+  if(!fromPop){ if(history.state&&history.state.case) history.back(); else history.replaceState(null,'','#work'); }
+  const card=document.querySelector('.card[data-case]'); if(card) card.focus({preventScroll:true});
+}
+document.addEventListener('click',e=>{
+  const card=e.target.closest('.card[data-case]');
+  if(card){e.preventDefault();openCase(card.dataset.case,true);return;}
+  if(e.target.closest('[data-close]')){closeCase(false);return;}
+  const cp=e.target.closest('[data-copy]');
+  if(cp){const v=cp.dataset.copy;const done=()=>{cp.textContent='Copied';setTimeout(()=>cp.textContent='Copy',1400)};
+    try{navigator.clipboard.writeText(v).then(done,()=>{const r=document.createRange();r.selectNodeContents(cp.previousElementSibling);getSelection().removeAllRanges();getSelection().addRange(r);});}catch(err){}}
+  const btn=e.target.closest('.dl-btn'); if(btn){btn.classList.remove('got');void btn.offsetWidth;btn.classList.add('got');}
+});
+dlg.addEventListener('cancel',e=>{e.preventDefault();closeCase(false);});
+addEventListener('popstate',()=>{const h=location.hash.slice(1);if(PROJECTS.some(p=>p.slug===h))openCase(h,false);else closeCase(true);});
+{const h=location.hash.slice(1);if(PROJECTS.some(p=>p.slug===h))openCase(h,false);}
 
 /* ---------- keep giant type inside the screen ---------- */
 function fitType(){
